@@ -1,0 +1,32 @@
+.statsDisplay {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  background-color: #3b3b5c;
+  border-radius: 10px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.statItem {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 16px;
+  color: #e0e0e0;
+}
+
+.statItem input {
+  background-color: transparent;
+  border: none;
+  color: #e0e0e0;
+  font-size: 16px;
+  width: 30px;
+  text-align: center;
+  outline: none;
+}
+
+.statItem input:disabled {
+  cursor: default;
+  opacity: 0.8;
+}
