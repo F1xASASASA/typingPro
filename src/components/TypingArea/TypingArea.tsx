@@ -4,18 +4,19 @@ import { useState, useEffect } from 'react'
 
 const TypingArea: React.FC = () => {
 
-  const text: string = "О-о, резиновые сапоги. О-о-о, лесочек. О-о. О-о, опушечка. О-о-о, подосиновичек. О-о-о, рыжик. О-о-о, опёнок";
+  const text: string = "ааддадада адададад адададада адад ададад ададададад адададада адад ададад ададададад адададада адад ададад ададададад";
   const cymbols: string[] = text.split('');
   
   const [textIndex, setTextIndex] = useState<number>(0);
   const [nextCymbols, setNextCymbols] = useState<string[]>([]);
   const [completeCymbols, setCompleteCymbols] = useState<string[]>([]);
+  const [failCounter, setFailCounter] = useState<number>(0);
 
   // Обработчик нажатия клавиш
   useEffect(() => {
   const handleKeyDown = (event: KeyboardEvent) => {
 
-    console.log("Нажата клавиша:", event.key); // <-- ВОТ ЭТО
+    console.log("Нажата клавиша:", event.key);
 
     if (event.key == cymbols[textIndex]) {
       const newIndex = textIndex + 1;
@@ -23,11 +24,26 @@ const TypingArea: React.FC = () => {
       console.log("отработал")
       
       // Обновляем символы
-      setNextCymbols(cymbols.slice(newIndex, newIndex + 39));
+      setNextCymbols(cymbols.slice(newIndex, newIndex + 35));
       setCompleteCymbols(cymbols.slice(0, newIndex));
-      // if (newIndex >= 39) {
-      //   setCompleteCymbols(cymbols.splice(0, 1))
-      // }
+      if (newIndex >= 35) {
+        const start = newIndex - 34; // Начинаем за 34 символа до текущего
+        const end = newIndex + 1;    // Заканчиваем на текущем символе
+        setCompleteCymbols(cymbols.slice(start, end));
+      }
+    }
+    else {
+      const failSum = failCounter + 1;
+      setFailCounter(failSum);
+      console.log("Счетчик ошибок:" + failSum);
+      // *ПОФИКСИТЬ ОШИБКУ!!! TS ВОСПРИНИМАЕТ НАЖАНИЕ НА SHIFT, ALT И Т.П. КАК ОШИБКУ!!!
+      // *ПОФИКСИТЬ ОШИБКУ!!! TS ВОСПРИНИМАЕТ НАЖАНИЕ НА SHIFT, ALT И Т.П. КАК ОШИБКУ!!!
+      // *ПОФИКСИТЬ ОШИБКУ!!! TS ВОСПРИНИМАЕТ НАЖАНИЕ НА SHIFT, ALT И Т.П. КАК ОШИБКУ!!!
+      // *ПОФИКСИТЬ ОШИБКУ!!! TS ВОСПРИНИМАЕТ НАЖАНИЕ НА SHIFT, ALT И Т.П. КАК ОШИБКУ!!!
+      // *ПОФИКСИТЬ ОШИБКУ!!! TS ВОСПРИНИМАЕТ НАЖАНИЕ НА SHIFT, ALT И Т.П. КАК ОШИБКУ!!!
+      // *ПОФИКСИТЬ ОШИБКУ!!! TS ВОСПРИНИМАЕТ НАЖАНИЕ НА SHIFT, ALT И Т.П. КАК ОШИБКУ!!!
+      // *ПОФИКСИТЬ ОШИБКУ!!! TS ВОСПРИНИМАЕТ НАЖАНИЕ НА SHIFT, ALT И Т.П. КАК ОШИБКУ!!!
+      // *ПОФИКСИТЬ ОШИБКУ!!! TS ВОСПРИНИМАЕТ НАЖАНИЕ НА SHIFT, ALT И Т.П. КАК ОШИБКУ!!!
     }
   };
 
@@ -40,7 +56,7 @@ const TypingArea: React.FC = () => {
 
   // Инициализация при первом рендере
   useEffect(() => {
-    setNextCymbols(cymbols.slice(0, 39));
+    setNextCymbols(cymbols.slice(0, 35));
     setCompleteCymbols([]);
   }, []);
 
