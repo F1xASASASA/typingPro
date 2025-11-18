@@ -3,7 +3,7 @@ import styles from './StartButton.module.css';
 
 const StartButton: React.FC = () => {
   return (
-    <button className={styles.startButton} disabled>Начать сначала</button>
+    <button className={styles.startButton}>Начать сначала</button>
   );
 };
 

@@ -5,7 +5,7 @@ const Header: React.FC = () => {
   return (
     <header className={styles.appHeader}>
       <div className={styles.appTitle}>Typing Pro</div>
-      <button className={styles.helpButton} disabled>?</button>
+      <button className={styles.helpButton}>?</button>
     </header>
   );
 };
