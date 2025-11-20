@@ -1,18 +1,25 @@
 .appHeader {
   width: 100%;
-  max-width: 600px;
+  height: 70px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  margin-bottom: 40px;
-  padding: 0 10px;
   box-sizing: border-box;
+  background-color: #38205966;
 }
 
 .appTitle {
   font-size: 28px;
   font-weight: bold;
   color: #9370db;
+}
+
+.TitleSpanLeft {
+  color: #00DFD8;
+}
+
+.TitleSpanRight {
+  color: #FF5A78;
 }
 
 .helpButton {

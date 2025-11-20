@@ -10,14 +10,16 @@ import './App.css';
 
 const App: React.FC = () => {
   return (
-    <div className="vk-mini-app">
+    <div className="vk-mini-app-main">
       <Header />
-      <main className="app-main">
-        <ModeSelection />
-        <TypingArea />
-        <StatsDisplay />
-        <StartButton />
-      </main>
+      <div className='app-wrapper'>
+        <main className="app-main">
+          <ModeSelection />
+          <TypingArea />
+          <StatsDisplay />
+          <StartButton />
+        </main>
+      </div>
     </div>
   );
 };
