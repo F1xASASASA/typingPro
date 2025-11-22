@@ -1,130 +1,92 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styles from './TypingArea.module.css';
-import { useState, useEffect } from 'react'
 
 interface TypingAreaProps {
   onFailCountChange?: (failCount: number) => void;
-  onAccuracy?: (acurancy: number) => void
+  onAccuracy?: (accuracy: number) => void;
 }
 
 const TypingAreaInput: React.FC<TypingAreaProps> = ({ onFailCountChange, onAccuracy }) => {
+  const text: string =
+    "ВВсужен крутой ВВтекст чекать контекст нужен крутой текст ВВчекать контекст нужен крутой текст чекать контекст нужен крутой текст чекать контекст";
 
-  const text: string = "ВВсужен крутой ВВтекст чекать контекст нужен крутой текст ВВчекать контекст нужен крутой текст чекать контекст нужен крутой текст чекать контекст";
-  const cymbols: string[] = text.split('');
+  const cymbols = text.split('');
 
-  const [cymbolsCount, setCymbolsCount] = useState<number>(0)
-  
-  const [textIndex, setTextIndex] = useState<number>(0);
+  const [textIndex, setTextIndex] = useState(0);
   const [nextCymbols, setNextCymbols] = useState<string[]>([]);
   const [completeCymbols, setCompleteCymbols] = useState<string[]>([]);
-  
-  let AllCountCymbols = 45;
-  let keyIgnore:boolean = false
 
-  // Подсчеты для статистики 
-  const [failCount, setFailCount] = useState<number>(0);
-  const [pressCount, setPresCount] = useState<number>(1)
-  // const [completeCount, setCompleteCount] = useState<number>(0)
+  const [failCount, setFailCount] = useState(0);
+  const [pressCount, setPressCount] = useState(0);
+  const [accuracy, setAccuracy] = useState(100);
 
-  // Статистика
-  const [accuracy, setAccuracy] = useState<number>(100)
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  // Оповещаем родительский компонент об изменении failCount
-  useEffect(() => {
-    if (onFailCountChange) {
-      onFailCountChange(failCount);
-    }
-  }, [failCount, onFailCountChange]);
+  const AllCountCymbols = 45;
 
   useEffect(() => {
-    if (onAccuracy) {
-      onAccuracy(accuracy);
-    }
-  }, [accuracy, onAccuracy]);
+    onFailCountChange?.(failCount);
+  }, [failCount]);
 
-
-  // Обработчик нажатия клавиш
   useEffect(() => {
-  const handleKeyDown = (event: KeyboardEvent) => {
-    // console.log("Следущий символ: " + nextCymbols)
-    // console.log("Отработаный символ: " + completeCymbols)
-    console.log("Нажата клавиша:", event.key)
-    console.log("Клавишь нажато:", pressCount)
+    onAccuracy?.(accuracy);
+  }, [accuracy]);
 
-
-    if (
-      event.key != "ContextMenu" &&
-      event.key != "AltGraph" &&
-      event.key != "Meta" &&
-      event.key != "Control" &&
-      event.key != "Alt" &&
-      event.key != "Shift"
-    ) {
-      keyIgnore = true
-    }
-    else {
-      keyIgnore = false
-    } 
-    
-    if (event.key == cymbols[textIndex]) {
-      const newIndex = textIndex + 1;
-      setCymbolsCount(cymbolsCount + 1)
-
-      setTextIndex(newIndex);
-      console.log("отработал совпадение клавишь")
-    
-      // Обновляем символы
-      setNextCymbols(cymbols.slice(newIndex, newIndex + AllCountCymbols));
-      setCompleteCymbols(cymbols.slice(0, newIndex));
-      if (newIndex >= AllCountCymbols) {
-        const start = newIndex - AllCountCymbols; // Начинаем за 34 символа до текущего
-        const end = newIndex;    // Заканчиваем на текущем символе
-        setCompleteCymbols(cymbols.slice(start, end));
-      }
-    }
-    else {
-      if ( keyIgnore != false ) {
-        const failSum = failCount + 1;
-        setFailCount(failSum);
-        console.log("Счетчик ошибок:" + failSum);
-        
-      }
-    };
-
-    if( keyIgnore != false )
-    {
-      setPresCount(pressCount + 1)
-    }
-
-    setAccuracy(cymbolsCount / pressCount * 100)
-    console.log( "Процент попаданий", Math.trunc(accuracy))
-
-  }
-  document.addEventListener('keydown', handleKeyDown);
-
-  return () => {
-    document.removeEventListener('keydown', handleKeyDown);
-  };
-}, [textIndex, cymbols]);
-
-
-  // Инициализация при первом рендере
+  // Инициализация
   useEffect(() => {
     setNextCymbols(cymbols.slice(0, AllCountCymbols));
-    setCompleteCymbols([]);
+
+    // автофокус на input
+    setTimeout(() => inputRef.current?.focus(), 200);
   }, []);
 
+  // Основная обработка ввода (Android OK)
+  const handleInput = (e: React.FormEvent<HTMLInputElement>) => {
+    const value = e.currentTarget.value;
+
+    if (!value) {
+      // Backspace
+      return;
+    }
+
+    const char = value[value.length - 1]; // последний введённый символ
+    e.currentTarget.value = ""; // очищаем input
+
+    setPressCount(prev => prev + 1);
+
+    if (char === cymbols[textIndex]) {
+      // верная буква 
+      const newIndex = textIndex + 1;
+      setTextIndex(newIndex);
+
+      setCompleteCymbols(cymbols.slice(Math.max(0, newIndex - AllCountCymbols), newIndex));
+      setNextCymbols(cymbols.slice(newIndex, newIndex + AllCountCymbols));
+    } else {
+      // обратка ошибки
+      setFailCount(prev => prev + 1);
+    }
+
+    setAccuracy(prev => Math.round((textIndex / (pressCount + 1)) * 100));
+  };
+
   return (
-    <div className={styles.typingArea}>
-      <div className={styles.complete_cymbols}>
-        {completeCymbols} 
-      </div>
-      <div className={styles.next_cymbols}>
-        {nextCymbols}
-      </div>
+    <div className={styles.typingArea} onClick={() => inputRef.current?.focus()}>
+      {/* скрытый input */}
+      <input
+        ref={inputRef}
+        type="text"
+        autoCapitalize="none"
+        autoCorrect="off"
+        spellCheck={false}
+        className={styles.hiddenInput}
+        onInput={handleInput}
+      />
+
+      <div className={styles.complete_cymbols}>{completeCymbols}</div>
+      <div className={styles.next_cymbols}>{nextCymbols}</div>
     </div>
-  )
-}
+  );
+};
 
 export default TypingAreaInput;
 export const default_FailSum = 0;

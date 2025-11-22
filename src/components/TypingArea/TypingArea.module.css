@@ -48,3 +48,9 @@
   text-align: left;
   border-left: 1px solid white;
 }
+
+.hiddenInput {
+  opacity: 0;
+  position: absolute;
+  pointer-events: none;
+}
