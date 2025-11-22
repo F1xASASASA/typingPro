@@ -39,7 +39,6 @@ const App: React.FC = () => {
     //       <ModeSelection />
     //       <StatsDisplay />
     //       <StartButton />
-          
     //     </main>
     //   </div>
     // </div>
