@@ -1,11 +1,11 @@
 import React from 'react';
 import styles from './InfinityMode.module.css';
-import { TypingArea } from '../..';
+import StatsDisplay from "../../StatsDisplay/StatsDisplay"
 
 const InfinityMode: React.FC = () => {
   return (
     <div>
-      <TypingArea/>
+      <StatsDisplay/>
     </div>
   );
 };

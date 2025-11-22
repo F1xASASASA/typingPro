@@ -4,9 +4,10 @@ import { useState, useEffect } from 'react'
 
 interface TypingAreaProps {
   onFailCountChange?: (failCount: number) => void;
+  onCompleteCymbols?: (pressCount: number)=> void;
 }
 
-const TypingArea: React.FC<TypingAreaProps> = ({ onFailCountChange }) => {
+const TypingArea: React.FC<TypingAreaProps> = ({ onFailCountChange, onCompleteCymbols }) => {
 
   const text: string = "ВВсужен крутой ВВтекст чекать контекст нужен крутой текст ВВчекать контекст нужен крутой текст чекать контекст нужен крутой текст чекать контекст";
   const cymbols: string[] = text.split('');

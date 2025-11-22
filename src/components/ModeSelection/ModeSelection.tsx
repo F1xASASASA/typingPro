@@ -1,25 +1,20 @@
 import React from 'react';
 import styles from './ModeSelection.module.css';
-import ReactDOM from 'react-dom/client';
-import { BrowserRouter, Routes, Route } from 'react-router';
-import DailyMode from '../modePages/DailyMode/dailyMode';
-import ClassicMode from '../modePages/ClassicMode/classicMode';
-import InfinityMode from '../modePages/InfinityMode/infinityMode';
+import {Link } from 'react-router';
 
 const ModeSelection: React.FC = () => {
   return (
-    <React.StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/dailyMode" element={<DailyMode/>} />
-        <Route path="/classicMode" element={<ClassicMode/>} /> 
-        <Route path="/infinityMode" element={<InfinityMode/>} />
-      </Routes>
-
-      {/* https://ru.hexlet.io/blog/posts/react-router-v6 */}
-      
-    </BrowserRouter>
-  </React.StrictMode>
+    <div className={styles.modeSelection}>
+      <Link className={styles.modeButton} to="/ClassicMode">
+        Ссылка на Классический
+      </Link>
+      <Link className={styles.modeButton} to="/DailyMode">
+        Ссылка на Ежедневный
+      </Link>
+      <Link className={styles.modeButton} to="/InfinityMode">
+        Ссылка на Бесконечный
+      </Link>
+  </div>
   );
 };
 

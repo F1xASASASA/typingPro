@@ -1,11 +1,11 @@
 import React from 'react';
 import styles from './ClassicMode.module.css';
-import { TypingArea } from '../..';
+import StatsDisplay from "../../StatsDisplay/StatsDisplay"
 
 const ClassicMode: React.FC = () => {
   return (
     <div>
-        <TypingArea/>
+      <StatsDisplay/>
     </div>
   );
 };

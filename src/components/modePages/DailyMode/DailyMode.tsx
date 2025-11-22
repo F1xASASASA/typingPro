@@ -1,11 +1,11 @@
 import React from 'react';
 import styles from './DailyMode.module.css';
-import { TypingArea } from '../..';
+import StatsDisplay from "../../StatsDisplay/StatsDisplay"
 
 const DailyMode: React.FC = () => {
   return (
     <div>
-      <TypingArea/>  
+      <StatsDisplay/>
     </div>
   );
 };
