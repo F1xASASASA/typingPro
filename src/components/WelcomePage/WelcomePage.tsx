@@ -9,8 +9,4 @@ const WelcomePage: React.FC = () => {
     );
 };
 
-<<<<<<< HEAD
 export default WelcomePage;
-=======
-export default WelcomePage;P
->>>>>>> add-typing-script
