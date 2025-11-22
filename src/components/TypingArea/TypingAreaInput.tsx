@@ -2,8 +2,12 @@ import React from 'react';
 import styles from './TypingArea.module.css';
 import { useState, useEffect } from 'react'
 
+interface TypingAreaProps {
+  onFailCountChange?: (failCount: number) => void;
+  onAccuracy?: (acurancy: number) => void
+}
 
-const TypingAreaAI: React.FC = () => {
+const TypingAreaInput: React.FC<TypingAreaProps> = ({ onFailCountChange, onAccuracy }) => {
 
   const text: string = "ВВсужен крутой ВВтекст чекать контекст нужен крутой текст ВВчекать контекст нужен крутой текст чекать контекст нужен крутой текст чекать контекст";
   const cymbols: string[] = text.split('');
@@ -13,23 +17,61 @@ const TypingAreaAI: React.FC = () => {
   const [textIndex, setTextIndex] = useState<number>(0);
   const [nextCymbols, setNextCymbols] = useState<string[]>([]);
   const [completeCymbols, setCompleteCymbols] = useState<string[]>([]);
-  const [failCounter, setFailCounter] = useState<number>(0);
+  
   let AllCountCymbols = 45;
+  let keyIgnore:boolean = false
+
+  // Подсчеты для статистики 
+  const [failCount, setFailCount] = useState<number>(0);
+  const [pressCount, setPresCount] = useState<number>(1)
+  // const [completeCount, setCompleteCount] = useState<number>(0)
+
+  // Статистика
+  const [accuracy, setAccuracy] = useState<number>(100)
+
+  // Оповещаем родительский компонент об изменении failCount
+  useEffect(() => {
+    if (onFailCountChange) {
+      onFailCountChange(failCount);
+    }
+  }, [failCount, onFailCountChange]);
+
+  useEffect(() => {
+    if (onAccuracy) {
+      onAccuracy(accuracy);
+    }
+  }, [accuracy, onAccuracy]);
 
 
   // Обработчик нажатия клавиш
   useEffect(() => {
   const handleKeyDown = (event: KeyboardEvent) => {
-    console.log("Следущий символ: " + nextCymbols)
-    console.log("Отработаный символ: " + completeCymbols)
-    console.log("Нажата клавиша:", event.key);
+    // console.log("Следущий символ: " + nextCymbols)
+    // console.log("Отработаный символ: " + completeCymbols)
+    console.log("Нажата клавиша:", event.key)
+    console.log("Клавишь нажато:", pressCount)
+
+
+    if (
+      event.key != "ContextMenu" &&
+      event.key != "AltGraph" &&
+      event.key != "Meta" &&
+      event.key != "Control" &&
+      event.key != "Alt" &&
+      event.key != "Shift"
+    ) {
+      keyIgnore = true
+    }
+    else {
+      keyIgnore = false
+    } 
     
     if (event.key == cymbols[textIndex]) {
       const newIndex = textIndex + 1;
       setCymbolsCount(cymbolsCount + 1)
 
       setTextIndex(newIndex);
-      console.log("отработал")
+      console.log("отработал совпадение клавишь")
     
       // Обновляем символы
       setNextCymbols(cymbols.slice(newIndex, newIndex + AllCountCymbols));
@@ -41,27 +83,30 @@ const TypingAreaAI: React.FC = () => {
       }
     }
     else {
-      if (
-        event.key != "Shift" && 
-        event.key != "Alt" && 
-        event.key != "Control" &&
-        event.key != "Meta" &&
-        event.key != "AltGraph" &&
-        event.key != "ContextMenu"
-      ) {
-        const failSum = failCounter + 1;
-        setFailCounter(failSum);
+      if ( keyIgnore != false ) {
+        const failSum = failCount + 1;
+        setFailCount(failSum);
         console.log("Счетчик ошибок:" + failSum);
+        
       }
-    }
-  };
+    };
 
+    if( keyIgnore != false )
+    {
+      setPresCount(pressCount + 1)
+    }
+
+    setAccuracy(cymbolsCount / pressCount * 100)
+    console.log( "Процент попаданий", Math.trunc(accuracy))
+
+  }
   document.addEventListener('keydown', handleKeyDown);
 
   return () => {
     document.removeEventListener('keydown', handleKeyDown);
   };
 }, [textIndex, cymbols]);
+
 
   // Инициализация при первом рендере
   useEffect(() => {
@@ -81,4 +126,5 @@ const TypingAreaAI: React.FC = () => {
   )
 }
 
-export default TypingAreaAI;
+export default TypingAreaInput;
+export const default_FailSum = 0;

@@ -4,10 +4,10 @@ import { useState, useEffect } from 'react'
 
 interface TypingAreaProps {
   onFailCountChange?: (failCount: number) => void;
-  onCompleteCymbols?: (pressCount: number)=> void;
+  onAccuracy?: (acurancy: number) => void
 }
 
-const TypingArea: React.FC<TypingAreaProps> = ({ onFailCountChange, onCompleteCymbols }) => {
+const TypingArea: React.FC<TypingAreaProps> = ({ onFailCountChange, onAccuracy }) => {
 
   const text: string = "ВВсужен крутой ВВтекст чекать контекст нужен крутой текст ВВчекать контекст нужен крутой текст чекать контекст нужен крутой текст чекать контекст";
   const cymbols: string[] = text.split('');
@@ -36,11 +36,18 @@ const TypingArea: React.FC<TypingAreaProps> = ({ onFailCountChange, onCompleteCy
     }
   }, [failCount, onFailCountChange]);
 
+  useEffect(() => {
+    if (onAccuracy) {
+      onAccuracy(accuracy);
+    }
+  }, [accuracy, onAccuracy]);
+
+
   // Обработчик нажатия клавиш
   useEffect(() => {
   const handleKeyDown = (event: KeyboardEvent) => {
-    console.log("Следущий символ: " + nextCymbols)
-    console.log("Отработаный символ: " + completeCymbols)
+    // console.log("Следущий символ: " + nextCymbols)
+    // console.log("Отработаный символ: " + completeCymbols)
     console.log("Нажата клавиша:", event.key)
     console.log("Клавишь нажато:", pressCount)
 
@@ -64,7 +71,7 @@ const TypingArea: React.FC<TypingAreaProps> = ({ onFailCountChange, onCompleteCy
       setCymbolsCount(cymbolsCount + 1)
 
       setTextIndex(newIndex);
-      console.log("отработал")
+      console.log("отработал совпадение клавишь")
     
       // Обновляем символы
       setNextCymbols(cymbols.slice(newIndex, newIndex + AllCountCymbols));
@@ -80,6 +87,7 @@ const TypingArea: React.FC<TypingAreaProps> = ({ onFailCountChange, onCompleteCy
         const failSum = failCount + 1;
         setFailCount(failSum);
         console.log("Счетчик ошибок:" + failSum);
+        
       }
     };
 
@@ -88,9 +96,9 @@ const TypingArea: React.FC<TypingAreaProps> = ({ onFailCountChange, onCompleteCy
       setPresCount(pressCount + 1)
     }
 
-    setAccuracy(cymbolsCount * pressCount)
+    setAccuracy(cymbolsCount / pressCount * 100)
+    console.log( "Процент попаданий", Math.trunc(accuracy))
 
-    console.log(accuracy)
   }
   document.addEventListener('keydown', handleKeyDown);
 
@@ -108,6 +116,7 @@ const TypingArea: React.FC<TypingAreaProps> = ({ onFailCountChange, onCompleteCy
 
   return (
     <div className={styles.typingArea}>
+      <input type="text" />
       <div className={styles.complete_cymbols}>
         {completeCymbols} 
       </div>

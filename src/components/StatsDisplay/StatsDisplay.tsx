@@ -1,42 +1,31 @@
 import React, { useState } from 'react';
-import TypingArea from '../TypingArea/TypingArea';
+import TypingAreaInput from '../TypingArea/TypingAreaInput';
+import style from './StatsDisplay.module.css';
+import '../../scripts/OpenPhoneKeyboard/OpenPhoneKeyboard';
+
 
 const StatsDisplay: React.FC = () => {
   const [currentFailCount, setCurrentFailCount] = useState<number>(0);
-
+  const [currentAccuracy, setCurrentAccuracy] = useState<number>(100)
+  
   const handleFailCountChange = (failCount: number) => {
     setCurrentFailCount(failCount);
     console.log("Текущее количество ошибок:", failCount);
   };
 
+  const handleAccuracy = (accuracy: number) => {
+    setCurrentAccuracy(Math.trunc(accuracy))
+  }
+  
   return (
     <div>
-      <TypingArea onFailCountChange={handleFailCountChange} />
-      <div>Ошибки: {currentFailCount}</div>
+      <TypingAreaInput onFailCountChange={handleFailCountChange} onAccuracy={handleAccuracy} />
+      <div className={style.statsDisplayMain}>
+        <div>Ошибки: {currentFailCount}</div>
+        <div className="">{currentAccuracy} %</div>
+      </div>
     </div>
   );
 };
-
-
-
-// import React  from 'react';
-// import styles from './StatsDisplay.module.css';
-
-
-// const StatsDisplay: React.FC = () => {
-//   return (
-//     <div className={styles.statsDisplay}>
-//       <div className={styles.statItem}>
-//         Время :  S
-//       </div>
-//       <div className={styles.statItem}>
-//         WPM (скорость) : 
-//       </div>
-//       <div className={styles.statItem}>
-//         Точность : %
-//       </div>
-//     </div>
-//   );
-// };
 
 export default StatsDisplay;
