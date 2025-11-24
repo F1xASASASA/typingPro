@@ -1,7 +1,7 @@
 .modeSelection {
   display: flex;
   background-color: #3b3b5c;
-  border-radius: 10px;
+  border-radius: 30px;
   overflow: hidden;
   margin-bottom: 50px;
 }
@@ -13,6 +13,13 @@
   color: #e0e0e0;
   font-size: 16px;
   outline: none;
+  text-decoration: none;
+  font-size: 20px;
+  transition: color 0.5s ease-in-out;
+}
+
+.modeButton:hover {
+  color: #00DFD8;
 }
 
 .modeButton:disabled {

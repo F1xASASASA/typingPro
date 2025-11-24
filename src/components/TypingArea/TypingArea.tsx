@@ -71,7 +71,7 @@ const TypingArea: React.FC<TypingAreaProps> = ({ onFailCountChange, onAccuracy }
       setCymbolsCount(cymbolsCount + 1)
 
       setTextIndex(newIndex);
-      console.log("отработал совпадение клавишь")
+      console.log("отработал совпадение клавиш")
     
       // Обновляем символы
       setNextCymbols(cymbols.slice(newIndex, newIndex + AllCountCymbols));
