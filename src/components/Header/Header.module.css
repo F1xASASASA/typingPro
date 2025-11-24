@@ -16,10 +16,12 @@
 
 .TitleSpanLeft {
   color: #00DFD8;
+  text-shadow: 0px 4px 4px rgb(0, 233, 216, 0.25);
 }
 
 .TitleSpanRight {
   color: #FF5A78;
+  text-shadow: 0px 4px 4px rgb(0, 233, 216, 0.25);
 }
 
 .helpButton {
