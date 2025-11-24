@@ -21,7 +21,7 @@ const TypingAreaInput: React.FC<TypingAreaProps> = ({ onFailCountChange, onAccur
   const [failCount, setFailCount] = useState(0);
   const [pressCount, setPressCount] = useState(0);
   const [accuracy, setAccuracy] = useState(100);
-  const [startPrint, setStartPrint] = useState<boolean>(false)
+  const [startScript, setStartScript] = useState<boolean>(false)
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -42,7 +42,7 @@ const TypingAreaInput: React.FC<TypingAreaProps> = ({ onFailCountChange, onAccur
 
   // Секундомер
     useEffect(() => {
-    if (startPrint === false) return(console.log("Не отработало"));
+    if (startScript === false) return(console.log("Не отработало"));
     const interval = setInterval(() => {
       setSeconds(prevSeconds => {
         const newSeconds = prevSeconds + 1;
@@ -50,7 +50,7 @@ const TypingAreaInput: React.FC<TypingAreaProps> = ({ onFailCountChange, onAccur
       });
     }, 1000);
     return () => clearInterval(interval);
-  }, [startPrint]); // ← пустой массив зависимостей
+  }, [startScript]); // ← пустой массив зависимостей
 
 
   // Инициализация
@@ -60,6 +60,7 @@ const TypingAreaInput: React.FC<TypingAreaProps> = ({ onFailCountChange, onAccur
     // автофокус на input
     setTimeout(() => inputRef.current?.focus(), 200);
   }, []);
+
 
   // Основная обработка ввода (Android OK)
   const handleInput = (e: React.FormEvent<HTMLInputElement>) => {
@@ -77,7 +78,7 @@ const TypingAreaInput: React.FC<TypingAreaProps> = ({ onFailCountChange, onAccur
 
     if (char === cymbols[textIndex]) {
       // верная буква 
-      setStartPrint(true)
+      setStartScript(true);
       const newIndex = textIndex + 1;
       setTextIndex(newIndex);
 
@@ -85,16 +86,15 @@ const TypingAreaInput: React.FC<TypingAreaProps> = ({ onFailCountChange, onAccur
       setNextCymbols(cymbols.slice(newIndex, newIndex + AllCountCymbols));
     } else {
       // обратка ошибки
-      setFailCount(prev => prev + 1);
+      if (startScript === false){
+        setFailCount(prev => prev + 1);
+      }
     }
 
     setAccuracy((textIndex / (pressCount + 1)) * 100);
-  };
+  }
 
-
-
-
-  return (
+return (
     <div className={styles.typingArea} onClick={() => inputRef.current?.focus()}>
       {/* скрытый input */}
       <input
