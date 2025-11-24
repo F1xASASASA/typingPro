@@ -7,10 +7,16 @@ import '../../scripts/OpenPhoneKeyboard/OpenPhoneKeyboard';
 const StatsDisplay: React.FC = () => {
   const [currentFailCount, setCurrentFailCount] = useState<number>(0);
   const [currentAccuracy, setCurrentAccuracy] = useState<number>(100)
+  const [currentSeconds, setCurrentSeconds] = useState<number>(0)
   
   const handleFailCountChange = (failCount: number) => {
     setCurrentFailCount(failCount);
     console.log("Текущее количество ошибок:", failCount);
+  };
+
+  const handleSeconds = (seconds: number) => {
+    setCurrentSeconds(seconds);
+    console.log("таймер:", seconds);
   };
 
   const handleAccuracy = (accuracy: number) => {
@@ -19,10 +25,11 @@ const StatsDisplay: React.FC = () => {
   
   return (
     <div>
-      <TypingAreaInput onFailCountChange={handleFailCountChange} onAccuracy={handleAccuracy} />
+      <TypingAreaInput onFailCountChange={handleFailCountChange} onAccuracy={handleAccuracy} onSeconds={handleSeconds}/>
       <div className={style.statsDisplayMain}>
-        <div>Ошибки: {currentFailCount}</div>
-        <div className="">{currentAccuracy} %</div>
+        <div className="">Ошибки: {currentFailCount}</div>
+        <div className="">Общее время: {currentSeconds}</div>
+        <div className="">Точность: {currentAccuracy} %</div>
       </div>
     </div>
   );

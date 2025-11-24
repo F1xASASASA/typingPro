@@ -4,9 +4,10 @@ import styles from './TypingArea.module.css';
 interface TypingAreaProps {
   onFailCountChange?: (failCount: number) => void;
   onAccuracy?: (accuracy: number) => void;
+  onSeconds?: (seconds : number) => void;
 }
 
-const TypingAreaInput: React.FC<TypingAreaProps> = ({ onFailCountChange, onAccuracy }) => {
+const TypingAreaInput: React.FC<TypingAreaProps> = ({ onFailCountChange, onAccuracy, onSeconds }) => {
   const text: string =
     "ВВсужен крутой ВВтекст чекать контекст нужен крутой текст ВВчекать контекст нужен крутой текст чекать контекст нужен крутой текст чекать контекст";
 
@@ -15,10 +16,12 @@ const TypingAreaInput: React.FC<TypingAreaProps> = ({ onFailCountChange, onAccur
   const [textIndex, setTextIndex] = useState(0);
   const [nextCymbols, setNextCymbols] = useState<string[]>([]);
   const [completeCymbols, setCompleteCymbols] = useState<string[]>([]);
+  const [seconds, setSeconds] = useState(0);
 
   const [failCount, setFailCount] = useState(0);
   const [pressCount, setPressCount] = useState(0);
   const [accuracy, setAccuracy] = useState(100);
+  const [startPrint, setStartPrint] = useState<boolean>(false)
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -31,6 +34,24 @@ const TypingAreaInput: React.FC<TypingAreaProps> = ({ onFailCountChange, onAccur
   useEffect(() => {
     onAccuracy?.(accuracy);
   }, [accuracy]);
+
+  useEffect(() => {
+    onSeconds?.(seconds);
+  }, [seconds]);
+
+
+  // Секундомер
+    useEffect(() => {
+    if (startPrint === false) return(console.log("Не отработало"));
+    const interval = setInterval(() => {
+      setSeconds(prevSeconds => {
+        const newSeconds = prevSeconds + 1;
+        return newSeconds;
+      });
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [startPrint]); // ← пустой массив зависимостей
+
 
   // Инициализация
   useEffect(() => {
@@ -56,6 +77,7 @@ const TypingAreaInput: React.FC<TypingAreaProps> = ({ onFailCountChange, onAccur
 
     if (char === cymbols[textIndex]) {
       // верная буква 
+      setStartPrint(true)
       const newIndex = textIndex + 1;
       setTextIndex(newIndex);
 
@@ -66,8 +88,11 @@ const TypingAreaInput: React.FC<TypingAreaProps> = ({ onFailCountChange, onAccur
       setFailCount(prev => prev + 1);
     }
 
-    setAccuracy(prev => Math.round((textIndex / (pressCount + 1)) * 100));
+    setAccuracy((textIndex / (pressCount + 1)) * 100);
   };
+
+
+
 
   return (
     <div className={styles.typingArea} onClick={() => inputRef.current?.focus()}>

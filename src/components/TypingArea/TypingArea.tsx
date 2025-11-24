@@ -17,7 +17,8 @@ const TypingArea: React.FC<TypingAreaProps> = ({ onFailCountChange, onAccuracy }
   const [textIndex, setTextIndex] = useState<number>(0);
   const [nextCymbols, setNextCymbols] = useState<string[]>([]);
   const [completeCymbols, setCompleteCymbols] = useState<string[]>([]);
-  
+
+
   let AllCountCymbols = 45;
   let keyIgnore:boolean = false
 
@@ -41,6 +42,7 @@ const TypingArea: React.FC<TypingAreaProps> = ({ onFailCountChange, onAccuracy }
       onAccuracy(accuracy);
     }
   }, [accuracy, onAccuracy]);
+
 
 
   // Обработчик нажатия клавиш
