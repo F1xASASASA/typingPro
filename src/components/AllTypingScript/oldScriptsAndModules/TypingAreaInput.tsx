@@ -1,13 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
-import styles from './TypingArea.module.css';
+import style from './TypingArea.module.css';
+import { CounterProps } from '@vkontakte/vkui';
 
 interface TypingAreaProps {
   onFailCountChange?: (failCount: number) => void;
   onAccuracy?: (accuracy: number) => void;
   onSeconds?: (seconds : number) => void;
+  onCountPerSecond?: (countPerSecond: number) => void;
+  onReloadButtonClicked?: (RBC: boolean) => false;
 }
 
-const TypingAreaInput: React.FC<TypingAreaProps> = ({ onFailCountChange, onAccuracy, onSeconds }) => {
+const TypingAreaInput: React.FC<TypingAreaProps> = ({ onFailCountChange, onAccuracy, onSeconds, onCountPerSecond }) => {
   const text: string =
     "ВВсужен крутой ВВтекст чекать контекст нужен крутой текст ВВчекать контекст нужен крутой текст чекать контекст нужен крутой текст чекать контекст";
 
@@ -17,15 +20,19 @@ const TypingAreaInput: React.FC<TypingAreaProps> = ({ onFailCountChange, onAccur
   const [nextCymbols, setNextCymbols] = useState<string[]>([]);
   const [completeCymbols, setCompleteCymbols] = useState<string[]>([]);
   const [seconds, setSeconds] = useState(0);
+  const [RBC, setRBC] = useState(false);
 
+
+
+  // Статистика 
   const [failCount, setFailCount] = useState(0);
   const [pressCount, setPressCount] = useState(0);
-  const [accuracy, setAccuracy] = useState(100);
+  const [accuracy, setAccuracy] = useState(0);
   const [startScript, setStartScript] = useState<boolean>(false)
+  const [countPerSecond, setCountPerSecond] = useState<number>(0)
+  const [allCountCymbols, setAllCountCymbols] = useState<number>(45)
 
   const inputRef = useRef<HTMLInputElement>(null);
-
-  const AllCountCymbols = 45;
 
   useEffect(() => {
     onFailCountChange?.(failCount);
@@ -39,10 +46,15 @@ const TypingAreaInput: React.FC<TypingAreaProps> = ({ onFailCountChange, onAccur
     onSeconds?.(seconds);
   }, [seconds]);
 
+  useEffect(() => {
+    onCountPerSecond?.(countPerSecond)
+  }, [countPerSecond]);
 
   // Секундомер
     useEffect(() => {
-    if (startScript === false) return(console.log("Не отработало"));
+    if (startScript === false) {
+      return(console.log("Не отработало"));
+    }
     const interval = setInterval(() => {
       setSeconds(prevSeconds => {
         const newSeconds = prevSeconds + 1;
@@ -55,7 +67,7 @@ const TypingAreaInput: React.FC<TypingAreaProps> = ({ onFailCountChange, onAccur
 
   // Инициализация
   useEffect(() => {
-    setNextCymbols(cymbols.slice(0, AllCountCymbols));
+    setNextCymbols(cymbols.slice(0, allCountCymbols));
 
     // автофокус на input
     setTimeout(() => inputRef.current?.focus(), 200);
@@ -82,34 +94,37 @@ const TypingAreaInput: React.FC<TypingAreaProps> = ({ onFailCountChange, onAccur
       const newIndex = textIndex + 1;
       setTextIndex(newIndex);
 
-      setCompleteCymbols(cymbols.slice(Math.max(0, newIndex - AllCountCymbols), newIndex));
-      setNextCymbols(cymbols.slice(newIndex, newIndex + AllCountCymbols));
-    } else {
-      // обратка ошибки
-      if (startScript === false){
+      setCompleteCymbols(cymbols.slice(Math.max(0, newIndex - allCountCymbols), newIndex));
+      setNextCymbols(cymbols.slice(newIndex, newIndex + allCountCymbols));
+    } 
+    if (startScript == true && char !== cymbols[textIndex]) {
         setFailCount(prev => prev + 1);
-      }
     }
 
     setAccuracy((textIndex / (pressCount + 1)) * 100);
   }
+  
+
+
 
 return (
-    <div className={styles.typingArea} onClick={() => inputRef.current?.focus()}>
-      {/* скрытый input */}
+    <div className={style.typingAreaWrapper} onClick={() => inputRef.current?.focus()}>
       <input
         ref={inputRef}
         type="text"
         autoCapitalize="none"
         autoCorrect="off"
         spellCheck={false}
-        className={styles.hiddenInput}
+        className={style.hiddenInput}
         onInput={handleInput}
       />
-
-      <div className={styles.complete_cymbols}>{completeCymbols}</div>
-      <div className={styles.next_cymbols}>{nextCymbols}</div>
+      <div className={style.typingAreaMain}>
+        <div className={style.completeCymbols}>{completeCymbols}</div>
+        <div className={style.cutterCymbols}> </div>
+        <div className={style.nextCymbols}>{nextCymbols}</div>
+      </div>
     </div>
+    
   );
 };
 

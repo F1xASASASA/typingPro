@@ -16,7 +16,6 @@ const App: React.FC = () => {
           <ModeSelection/>
           <main className="app-main">
             <Routes>
-              {/* WelcomePage будет открываться на корневом пути */}
               <Route index element={<WelcomePage/>} />
               <Route path='/welcomePage' element={<WelcomePage/>}/>
               <Route path="/dailyMode" element={<DailyMode />} />

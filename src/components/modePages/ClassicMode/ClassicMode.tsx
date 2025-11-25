@@ -1,11 +1,11 @@
 import React from 'react';
-import styles from './ClassicMode.module.css';
-import StatsDisplay from "../../StatsDisplay/StatsDisplay"
+import style from './ClassicMode.module.css';
+import AllTypingScript from "../../AllTypingScript/AllTypingScript"
 
 const ClassicMode: React.FC = () => {
   return (
     <div>
-      <StatsDisplay/>
+      <AllTypingScript/>
     </div>
   );
 };

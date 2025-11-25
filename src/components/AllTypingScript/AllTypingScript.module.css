@@ -1,0 +1,187 @@
+.typingAreaWrapper {
+  width: 1200px;
+  height: 100px;
+  max-height: 100px;
+  padding: 20px;
+
+  margin-bottom: 40px;
+  
+  display: flex; 
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  background-color: #2b2b45;
+
+  border-radius: 60px;
+  box-sizing: border-box;
+  white-space: preserve nowrap;
+
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.typingAreaMain {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-center;
+  align-items: center;
+}
+
+.typingInput {
+  width: 100%;
+  background-color: transparent;
+  border: none;
+  color: #e0e0e0;
+  font-size: 26px;
+  outline: none;
+  text-align: center;
+  padding: 0;
+}
+
+.typingInput::placeholder {
+  color: #555577;
+}
+
+.typingInput:disabled {
+  cursor: default;
+  opacity: 0.8;
+}
+
+.completeCymbols{
+  min-width: 600px;
+  color: #00DFD8;
+  flex-wrap: nowrap;
+  text-align: right;
+  /* border-right: 1px solid white;    */
+}
+
+.cutterCymbols {
+  background-color: #00DFD8;
+  width: 2px;
+  height: 50px;
+  max-height: 50px;
+}
+
+.nextCymbols{
+  min-width: 600px;
+  flex-wrap: nowrap;
+  text-align: left;
+    /* border-right: 1px solid white;    */
+}
+
+.hiddenInput {
+  opacity: 0;
+  position: absolute;
+  pointer-events: none;
+}
+
+
+
+/** STATS DISPLAY */
+
+
+
+.startButton {
+  background-color: #9370db;
+  border: none;
+  border-radius: 10px;
+  padding: 15px 30px;
+  font-size: 18px;
+  color: white;
+  font-weight: bold;
+  outline: none;
+  width: 100%;
+  max-width: 300px;
+}
+
+.startButton:disabled {
+  cursor: default;
+  opacity: 0.7;
+}
+
+.modeSelection {
+  width: 1032px;
+  height: 80px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  background-color: #38205970;
+  border-radius: 30px;
+  overflow: hidden;
+  margin-bottom: 40px;
+}
+
+.modeButton {
+  background-color: transparent;
+  border: none;
+  padding: 10px 20px;
+  color: #FFFFFF;
+  font-size: 16px;
+  outline: none;
+  text-decoration: none;
+  font-size: 24px;
+  transition: color 0.3s ease-in-out;
+}
+
+.modeButton:hover {
+  color: #00DFD8;
+}
+
+.modeButton:disabled {
+  cursor: default;
+  opacity: 0.7;
+}
+
+.currentMode {
+  background-color: #9370db;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  pointer-events: none;
+}
+
+.statsDisplayWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 80px;
+}
+
+.statsDisplayMain {
+  width: 1032px;
+  height: 80px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  background-color: #38205970;
+  border-radius: 30px;
+  overflow: hidden;
+  margin-bottom: 50px;
+}
+
+.statItem {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 16px;
+  color: #e0e0e0;
+}
+
+.statItem input {
+  background-color: transparent;
+  border: none;
+  color: #e0e0e0;
+  font-size: 16px;
+  width: 30px;
+  text-align: center;
+  outline: none;
+}
+
+.statItem input:disabled {
+  cursor: default;
+  opacity: 0.8;
+}

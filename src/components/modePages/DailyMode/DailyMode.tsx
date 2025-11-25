@@ -1,11 +1,11 @@
 import React from 'react';
-import styles from './DailyMode.module.css';
-import StatsDisplay from "../../StatsDisplay/StatsDisplay"
+import style from './DailyMode.module.css';
+import AllTypingScript from '../../AllTypingScript/AllTypingScript';
 
 const DailyMode: React.FC = () => {
   return (
     <div>
-      <StatsDisplay/>
+      <AllTypingScript/>
     </div>
   );
 };
