@@ -8,7 +8,7 @@ interface ChildComponentProps {
 const RestartButton: React.FC<ChildComponentProps> = ({onButtonClick}) => {
   return (
     <div>
-      <button className={style.startButton} onClick={() => onButtonClick('Привет из дочернего компонента!')}>Начать сначала</button>
+      <button className={style.restartButton} onClick={() => onButtonClick('Привет из дочернего компонента!')}>Начать сначала</button>
     </div>
   )
 }

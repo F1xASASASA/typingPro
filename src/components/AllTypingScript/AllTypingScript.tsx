@@ -1,13 +1,27 @@
 import React, { useState, useEffect, useRef } from 'react';
 import style from './AllTypingScript.module.css';
-import { CounterProps } from '@vkontakte/vkui';
 import RestartButton from '../RestartButton/RestartButton';
 
-const AllTypingScript: React.FC = () => {
-  const text: string =
-    "ВВсужен крутой ВВтекст чекать контекст нужен крутой текст ВВчекать контекст нужен крутой текст чекать контекст нужен крутой текст чекать контекст";
+interface Props {
+  onText?: (text : string) => void;
+}
 
-  const cymbols = text.split('');
+
+const AllTypingScript: React.FC<Props> = ({onText}) => {
+
+
+  const [comfirmText, setComfirmText] = useState("");
+
+
+    
+  console.log(onText)
+
+
+  // setComfirmText(onText ?? " ")
+
+  // setComfirmText("ыфеа")
+  
+  const cymbols = comfirmText.split('');
 
   const [textIndex, setTextIndex] = useState(0);
   const [nextCymbols, setNextCymbols] = useState<string[]>([]);
@@ -20,7 +34,6 @@ const AllTypingScript: React.FC = () => {
   const [pressCount, setPressCount] = useState(0);
   const [accuracy, setAccuracy] = useState(0);
   const [startScript, setStartScript] = useState<boolean>(false)
-  const [countPerSecond, setCountPerSecond] = useState<number>(0)
   const [allCountCymbols, setAllCountCymbols] = useState<number>(45)
 
 
@@ -32,13 +45,16 @@ const AllTypingScript: React.FC = () => {
     setNextCymbols(cymbols.slice(0, allCountCymbols));
     setCompleteCymbols([]);
     setSeconds(0);
-
     setFailCount(0);
     setPressCount(0);
     setAccuracy(0);
     setStartScript(false);
-    console.log("Ну допустим перезагрузка");
+    setTimeout(() => inputRef.current?.focus(), 200);
+    console.log("Перезагрузка");
   };
+
+
+
 
   // Секундомер
     useEffect(() => {
@@ -95,8 +111,8 @@ const AllTypingScript: React.FC = () => {
   }
 
 return (
-    <div className="">
-      <div className={style.typingAreaWrapper} onClick={() => inputRef.current?.focus()}>
+    <div className={style.allTypingScriptMain}>
+      <div className={style.typingScriptInput} onClick={() => inputRef.current?.focus()}>
         <input
           ref={inputRef}
           type="text"
@@ -106,26 +122,23 @@ return (
           className={style.hiddenInput}
           onInput={handleInput}/>
 
-        <div className={style.typingAreaMain}>
+        <div className={style.typingScriptMain}>
           <div className={style.completeCymbols}>{completeCymbols}</div>
           <div className={style.cutterCymbols}> </div>
           <div className={style.nextCymbols}>{nextCymbols}</div>
         </div>
       </div>
+
       <div className={style.statsDisplayWrapper}>
         <div className={style.statsDisplayMain}>
-            <div className="">Ошибки: {failCount}</div>
-            <div className="">Общее время: {seconds}</div>
-            <div className="">Точность: {Math.trunc(accuracy)} %</div>
-            <div className="">Cимв/сек: {countPerSecond}</div>
+            <div>Ошибки: {failCount}</div>
+            <div>Общее время: {seconds}</div>
+            <div>Точность: {Math.trunc(accuracy)} %</div>
         </div>
       </div>
       
-      <div className=''>
-        <RestartButton onButtonClick={handleReloadApp} />
-      </div>
+      <RestartButton onButtonClick={handleReloadApp}/>
     </div>
-    
   );
 };
 
