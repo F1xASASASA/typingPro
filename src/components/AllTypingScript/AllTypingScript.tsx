@@ -2,26 +2,31 @@ import React, { useState, useEffect, useRef } from 'react';
 import style from './AllTypingScript.module.css';
 import RestartButton from '../RestartButton/RestartButton';
 
-interface Props {
-  onText?: (text : string) => void;
-}
+interface Props { text?: string }
 
-
-const AllTypingScript: React.FC<Props> = ({onText}) => {
-
-
+const AllTypingScript: React.FC<Props> = ({ text }) => {
   const [comfirmText, setComfirmText] = useState("");
 
 
-    
-  console.log(onText)
+    useEffect(() => {
+  if (text) {
+    setComfirmText(text);
+  }
+}, [text]);
 
 
-  // setComfirmText(onText ?? " ")
+// 2. Когда изменился comfirmText — обновляем отображение и ставим фокус
+useEffect(() => {
+  if (comfirmText.length === 0) return;
 
-  // setComfirmText("ыфеа")
-  
+  setNextCymbols(comfirmText.split('').slice(0, allCountCymbols));
+
+  // автофокус
+  setTimeout(() => inputRef.current?.focus(), 200);
+}, [comfirmText]);
+
   const cymbols = comfirmText.split('');
+
 
   const [textIndex, setTextIndex] = useState(0);
   const [nextCymbols, setNextCymbols] = useState<string[]>([]);
@@ -75,6 +80,11 @@ const AllTypingScript: React.FC<Props> = ({onText}) => {
   useEffect(() => {
     setNextCymbols(cymbols.slice(0, allCountCymbols));
 
+
+
+    // if (text !== undefined) setComfirmText(text);
+    //   console.log(text)
+
     // автофокус на input
     setTimeout(() => inputRef.current?.focus(), 200);
   }, []);
@@ -106,6 +116,10 @@ const AllTypingScript: React.FC<Props> = ({onText}) => {
     if (startScript == true && char !== cymbols[textIndex]) {
         setFailCount(prev => prev + 1);
     }
+
+    console.log(text)
+
+
 
     setAccuracy((textIndex / (pressCount + 1)) * 100);
   }

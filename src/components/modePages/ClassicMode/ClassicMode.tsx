@@ -8,23 +8,23 @@ const ClassicMode: React.FC = ({}) => {
 
   const [text, setText] = useState<string>(""); 
 
-  // useEffect(() => {
-  //   fetch(`/texts.txt`) // файл должен лежать в public/texts.txt
-  //     .then(res => res.text())
-  //     .then(data => {
-  //       const lines = data
-  //         .split("\n")              // делим файл по строкам
-  //         .map(l => l.trim())       // убираем пробелы
-  //         .filter(l => l.length > 0); // убираем пустые строки
+  useEffect(() => {
+    fetch(`/texts.txt`)
+      .then(res => res.text())
+      .then(data => {
+        const lines = data
+          .split("\n")
+          .map(l => l.trim())
+          .filter(l => l.length > 0); // убираем пустые строки
 
-  //       const randomLine = lines[Math.floor(Math.random() * lines.length)];
-  //       setText(randomLine);
-  //     });
-  // }, []);
+        const randomLine = lines[Math.floor(Math.random() * lines.length)];
+        setText(randomLine);
+      });
+  }, [text]);
 
   return (
     <div>
-      <AllTypingScript onText={text}/>
+      <AllTypingScript text={text}/>
     </div>
   );
 };
