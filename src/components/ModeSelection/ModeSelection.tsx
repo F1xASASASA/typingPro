@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './ModeSelection.module.css';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom'; // Исправлен импорт (был react-router, в App.tsx используется react-router-dom)
 
 const ModeSelection: React.FC = () => {
   return (
@@ -11,8 +11,8 @@ const ModeSelection: React.FC = () => {
       <Link className={styles.modeButton} to="/DailyMode">
         Ежедневный
       </Link>
-      <Link className={styles.modeButton} to="/InfinityMode">
-        Бесконечный
+      <Link className={styles.modeButton} to="/AIMode">
+        AI
       </Link>
   </div>
   );

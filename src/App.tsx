@@ -5,7 +5,8 @@ import { Header, ModeSelection } from './components';
 import WelcomePage from "./components/WelcomePage/WelcomePage";
 import DailyMode from './components/modePages/DailyMode/DailyMode';
 import ClassicMode from './components/modePages/ClassicMode/ClassicMode';
-import InfinityMode from './components/modePages/InfinityMode/InfinityMode';
+// import InfinityMode from './components/modePages/InfinityMode/InfinityMode'; // Удаляем старый
+import AIMode from './components/modePages/AIMode/AIMode'; // Добавляем новый
 
 const App: React.FC = () => {
   return (
@@ -20,7 +21,8 @@ const App: React.FC = () => {
               <Route path='/welcomePage' element={<WelcomePage/>}/>
               <Route path="/dailyMode" element={<DailyMode />} />
               <Route path="/classicMode" element={<ClassicMode />} />
-              <Route path="/infinityMode" element={<InfinityMode />} />
+              {/* Меняем infinityMode на aiMode */}
+              <Route path="/aiMode" element={<AIMode />} /> 
               <Route path="*" element={<WelcomePage />} />
             </Routes>
           </main>
