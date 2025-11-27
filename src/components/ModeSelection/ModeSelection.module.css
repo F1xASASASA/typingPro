@@ -5,7 +5,7 @@
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
-  background-color: #38205970;
+  background-color: #071031;
   border-radius: 30px;
   overflow: hidden;
   margin-bottom: 40px;
@@ -33,7 +33,7 @@
 }
 
 .currentMode {
-  background-color: #9370db;
+  background-color: #8722C6;
   padding: 10px 20px;
   border-radius: 10px;
   font-size: 16px;

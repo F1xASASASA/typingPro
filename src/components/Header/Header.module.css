@@ -5,7 +5,7 @@
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
-  background-color: #38205966;
+  background-color: #071031;
 }
 
 .appTitle {
@@ -25,7 +25,7 @@
 }
 
 .helpButton {
-  background-color: #3b3b5c;
+  background-color: #071031;
   border: none;
   border-radius: 50%;
   width: 30px;
