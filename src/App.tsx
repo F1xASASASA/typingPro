@@ -13,6 +13,7 @@ const App: React.FC = () => {
     <BrowserRouter>
       <div className="vk-mini-app-main">
         <Header/>
+        
         <div className='app-wrapper'>
           <ModeSelection/>
           <main className="app-main">
