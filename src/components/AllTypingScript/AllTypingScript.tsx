@@ -2,18 +2,23 @@ import React, { useState, useEffect, useRef } from 'react';
 import style from './AllTypingScript.module.css';
 import RestartButton from '../RestartButton/RestartButton';
 
-interface Props { text?: string }
+interface Props {
+  text?: string
+  reloadText: () => void;
+}
 
-const AllTypingScript: React.FC<Props> = ({ text }) => {
+
+
+
+const AllTypingScript: React.FC<Props> = ({ text, reloadText}) => {
   const [comfirmText, setComfirmText] = useState("");
 
-
-    useEffect(() => {
-  if (text) {
-    setComfirmText(text);
-  }
-}, [text]);
-
+  
+  useEffect(() => {
+      if (text) {
+        setComfirmText(text);
+      }
+    }, [text]);
 
 // 2. Когда изменился comfirmText — обновляем отображение и ставим фокус
 useEffect(() => {
@@ -42,20 +47,20 @@ useEffect(() => {
   const [allCountCymbols, setAllCountCymbols] = useState<number>(45)
 
 
+  //Перезагрузка
 
   const inputRef = useRef<HTMLInputElement>(null);
-
     const handleReloadApp = () => {
-    setTextIndex(0);
-    setNextCymbols(cymbols.slice(0, allCountCymbols));
-    setCompleteCymbols([]);
-    setSeconds(0);
-    setFailCount(0);
-    setPressCount(0);
-    setAccuracy(0);
-    setStartScript(false);
-    setTimeout(() => inputRef.current?.focus(), 200);
-    console.log("Перезагрузка");
+      setTextIndex(0);
+      setNextCymbols(cymbols.slice(0, allCountCymbols));
+      setCompleteCymbols([]);
+      setSeconds(0);
+      setFailCount(0);
+      setPressCount(0);
+      setAccuracy(0);
+      setStartScript(false);
+      reloadText(); // ← вот это вызывает новый текст
+      setTimeout(() => inputRef.current?.focus(), 200);
   };
 
 
@@ -82,8 +87,8 @@ useEffect(() => {
 
 
 
-    // if (text !== undefined) setComfirmText(text);
-    //   console.log(text)
+    if (text !== undefined) setComfirmText(text);
+       console.log(text)
 
     // автофокус на input
     setTimeout(() => inputRef.current?.focus(), 200);
@@ -116,9 +121,6 @@ useEffect(() => {
     if (startScript == true && char !== cymbols[textIndex]) {
         setFailCount(prev => prev + 1);
     }
-
-    console.log(text)
-
 
 
     setAccuracy((textIndex / (pressCount + 1)) * 100);

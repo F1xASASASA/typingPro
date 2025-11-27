@@ -8,23 +8,29 @@ const ClassicMode: React.FC = ({}) => {
 
   const [text, setText] = useState<string>(""); 
 
-  useEffect(() => {
+  const loadText = () => {
     fetch(`/texts.txt`)
       .then(res => res.text())
       .then(data => {
         const lines = data
           .split("\n")
           .map(l => l.trim())
-          .filter(l => l.length > 0); // убираем пустые строки
+          .filter(l => l.length > 0);
 
         const randomLine = lines[Math.floor(Math.random() * lines.length)];
         setText(randomLine);
       });
-  }, [text]);
+  };
+
+  
+  // Первый запуск
+  useEffect(() => {
+    loadText();
+  }, []);
 
   return (
     <div>
-      <AllTypingScript text={text}/>
+      <AllTypingScript text={text} reloadText={loadText}/>
     </div>
   );
 };
