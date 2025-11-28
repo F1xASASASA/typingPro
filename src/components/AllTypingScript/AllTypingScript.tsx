@@ -3,10 +3,15 @@ import style from './AllTypingScript.module.css';
 import RestartButton from '../RestartButton/RestartButton';
 import InfoButton from '../InfoButton/InfoButton';
 
-interface Props { text?: string }
+interface Props { 
+    text?: string;
+    // Callback функция, вызываемая при завершении игры
+    onGameEnd?: (wpm: number) => void; 
+}
 
-const AllTypingScript: React.FC<Props> = ({ text }) => {
+const AllTypingScript: React.FC<Props> = ({ text, onGameEnd }) => {
   const [comfirmText, setComfirmText] = useState("");
+  // Количество символов слева и справа
   const [allCountCymbols, setAllCountCymbols] = useState<number>(45);
 
   useEffect(() => {
@@ -14,12 +19,13 @@ const AllTypingScript: React.FC<Props> = ({ text }) => {
       setComfirmText(text);
     }
   }, [text]);
-
+console.log(text);
   // Сброс при смене текста
   useEffect(() => {
     if (comfirmText.length === 0) return;
     handleReloadApp();
   }, [comfirmText]);
+  
 
   const cymbols = comfirmText.split('');
 
@@ -35,7 +41,7 @@ const AllTypingScript: React.FC<Props> = ({ text }) => {
   const [wpm, setWpm] = useState(0);
   const [startScript, setStartScript] = useState<boolean>(false);
   
-  // Состояние завершения
+  // Состояние завершения (показывает модалку)
   const [isFinished, setIsFinished] = useState<boolean>(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -65,7 +71,7 @@ const AllTypingScript: React.FC<Props> = ({ text }) => {
     return () => clearInterval(interval);
   }, [startScript]);
 
-  // Расчет WPM (только пока не закончили, чтобы цифры не менялись на экране итогов)
+  // Расчет WPM и Точности в реальном времени
   useEffect(() => {
       if (!isFinished && seconds > 0 && textIndex > 0) {
         const words = textIndex / 5;
@@ -94,14 +100,29 @@ const AllTypingScript: React.FC<Props> = ({ text }) => {
       setCompleteCymbols(cymbols.slice(Math.max(0, newIndex - allCountCymbols), newIndex));
       setNextCymbols(cymbols.slice(newIndex, newIndex + allCountCymbols));
 
-      // ПРОВЕРКА НА КОНЕЦ ТЕКСТА
+      // --- ПРОВЕРКА НА КОНЕЦ ТЕКСТА ---
       if (newIndex >= cymbols.length) {
           setStartScript(false); // Останавливаем таймер
           setIsFinished(true);   // Показываем экран результатов
+          
+          // Рассчитываем финальный WPM (чтобы передать точное значение)
+          let finalWpm = 0;
+          if (seconds > 0) {
+              const words = newIndex / 5;
+              const minutes = seconds / 60;
+              finalWpm = Math.round(words / minutes);
+          }
+          setWpm(finalWpm);
+
+          // Отправляем данные в родительский компонент (DailyMode)
+          if (onGameEnd) {
+              onGameEnd(finalWpm);
+          }
       }
 
     } 
     
+    // Обработка ошибок
     if ((startScript || char === cymbols[textIndex]) && char !== cymbols[textIndex]) {
         if (startScript) setFailCount(prev => prev + 1);
     }
@@ -112,7 +133,7 @@ const AllTypingScript: React.FC<Props> = ({ text }) => {
     setAccuracy(Math.max(0, calculatedAcc));
   }
 
-  // РЕЗУЛЬТАТ ПОСЛЕ ФИНАЛА 
+  // --- ЭКРАН РЕЗУЛЬТАТОВ (ПОСЛЕ ЗАВЕРШЕНИЯ) ---
   if (isFinished) {
       return (
         <div className={style.allTypingScriptMain}>
@@ -144,7 +165,7 @@ const AllTypingScript: React.FC<Props> = ({ text }) => {
       );
   }
 
-  // --- ЭКРАН ПЕЧАТИ ---
+  // --- ЭКРАН ПЕЧАТИ (ВО ВРЕМЯ ИГРЫ) ---
   return (
     <div className={style.allTypingScriptMain}>
       
@@ -160,9 +181,12 @@ const AllTypingScript: React.FC<Props> = ({ text }) => {
              Точность : {Math.trunc(accuracy)}%
           </div>
       </div>
-      <div style={{ width: '1200px', display: 'flex', justifyContent: 'flex-start', marginBottom: '-20px', zIndex: 10 }}>
+
+      {/* Кнопка Инфо */}
+      <div style={{ width: '1200px', display: 'flex', justifyContent: 'flex-start', marginBottom: '-30px', paddingLeft: '20px', zIndex: 5 }}>
         <InfoButton />
       </div>
+
       {/* Поле ввода */}
       <div className={style.typingScriptInput} onClick={() => inputRef.current?.focus()}>
         <input

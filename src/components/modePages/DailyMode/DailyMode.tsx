@@ -18,6 +18,13 @@ const DailyMode: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
 
+  // Вычисляем дату
+  const currentDate = new Date().toLocaleDateString('ru-RU');
+
+  // --- ВОТ КОНСОЛЬ ЛОГ ---
+  console.log("Текущая дата:", currentDate);
+  // -----------------------
+
   useEffect(() => {
     loadDailyText();
   }, []);
@@ -52,7 +59,7 @@ const DailyMode: React.FC = () => {
     const url = "/yandex-api/v1/responses"; 
     
     // Жестко заданный промт для ежедневного задания
-    const dailyPromptInput = "Напиши интересный научный или исторический факт объемом 3-4 предложения для тренировки печати. Не используй списки, только сплошной текст.";
+    const dailyPromptInput = "Напиши текст до 400 символов не используя тире и ковычки,не начинай словом в далёкой, делай текст разнообразным, не повторяясь с тем что ты уже мог писать, и чтобы текст было ИНТЕРЕСНО читать и писать";
 
     const dataBody = {
       prompt: { id: PROMPT_ID },
@@ -123,12 +130,10 @@ const DailyMode: React.FC = () => {
 
   return (
     <div className={style.dailyModeContainer}>
-      <h2 className={style.dailyTitle}>
-        Задание на <span className={style.dailyDate}>{new Date().toLocaleDateString('ru-RU')}</span>
-      </h2>
       <AllTypingScript text={text}/>
     </div>
   );
+  
 };
 
 export default DailyMode;
