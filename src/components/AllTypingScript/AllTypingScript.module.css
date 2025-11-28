@@ -312,3 +312,84 @@
   position: absolute;
   pointer-events: none;
 }
+/* --- ЭКРАН РЕЗУЛЬТАТОВ --- */
+
+.resultsContainer {
+  width: 900px; /* Чуть уже поля ввода, чтобы смотрелось компактно */
+  background-color: #1E2A58; /* Цвет фона как у твоего инпута */
+  border: 2px solid #5d4891; /* Фиолетовая обводка */
+  border-radius: 40px;
+  padding: 40px;
+  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5); /* Глубокая тень */
+  animation: slideUp 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); /* Плавное появление */
+}
+
+/* Анимация появления снизу */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.resultsTitle {
+  font-size: 42px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+}
+
+.resultsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr; /* 4 колонки в ряд */
+  gap: 20px;
+  width: 100%;
+}
+
+.resultItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  
+  background-color: #2b2b45; /* Фон карточек чуть светлее общего */
+  border-radius: 20px;
+  padding: 20px 10px;
+  transition: transform 0.2s;
+}
+
+.resultItem:hover {
+  transform: translateY(-5px); /* Легкий подъем при наведении */
+  background-color: #323250;
+}
+
+.resultLabel {
+  font-size: 16px;
+  color: #a0a0c0; /* Серый текст подписи */
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.resultValue {
+  font-size: 36px;
+  font-weight: bold;
+  color: #00DFD8; /* Голубой (основной) */
+  text-shadow: 0 0 10px rgba(0, 223, 216, 0.3);
+}
+.resultValuePurple {
+  color: #9370db; /* Фиолетовый для WPM */
+  text-shadow: 0 0 10px rgba(147, 112, 219, 0.3);
+  font-size: 48px; /* WPM делаем самым большим */
+}
+
+.resultValuePink {
+  color: #FF5A78; /* Розовый для Ошибок */
+  text-shadow: 0 0 10px rgba(255, 90, 120, 0.3);
+}
