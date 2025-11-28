@@ -31,8 +31,11 @@ const AllTypingScript: React.FC<Props> = ({ text }) => {
   const [failCount, setFailCount] = useState(0);
   const [pressCount, setPressCount] = useState(0);
   const [accuracy, setAccuracy] = useState(100);
-  const [wpm, setWpm] = useState(0); // Добавили WPM
+  const [wpm, setWpm] = useState(0);
   const [startScript, setStartScript] = useState<boolean>(false);
+  
+  // Состояние завершения
+  const [isFinished, setIsFinished] = useState<boolean>(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -46,12 +49,13 @@ const AllTypingScript: React.FC<Props> = ({ text }) => {
     setAccuracy(100);
     setWpm(0);
     setStartScript(false);
+    setIsFinished(false); // Сбрасываем экран результатов
     setTimeout(() => inputRef.current?.focus(), 200);
   };
 
   // Секундомер
   useEffect(() => {
-    if (startScript === false) return;
+    if (!startScript) return;
     
     const interval = setInterval(() => {
       setSeconds(prevSeconds => prevSeconds + 1);
@@ -60,62 +64,90 @@ const AllTypingScript: React.FC<Props> = ({ text }) => {
     return () => clearInterval(interval);
   }, [startScript]);
 
-  // Расчет WPM и Точности
+  // Расчет WPM (только пока не закончили, чтобы цифры не менялись на экране итогов)
   useEffect(() => {
-      // WPM = (Кол-во символов / 5) / (Минуты)
-      if (seconds > 0 && textIndex > 0) {
+      if (!isFinished && seconds > 0 && textIndex > 0) {
         const words = textIndex / 5;
         const minutes = seconds / 60;
         setWpm(Math.round(words / minutes));
-      } else {
-        setWpm(0);
       }
-      
-      // Точность пересчитываем здесь или при клике (оставил логику обновления ниже, но инициализацию тут)
-  }, [seconds, textIndex]);
+  }, [seconds, textIndex, isFinished]);
 
 
-  // Основная обработка ввода (ОРИГИНАЛЬНАЯ)
   const handleInput = (e: React.FormEvent<HTMLInputElement>) => {
     const value = e.currentTarget.value;
+    if (!value) return; 
 
-    if (!value) return; // Backspace
-
-    const char = value[value.length - 1]; // последний введённый символ
-    e.currentTarget.value = ""; // очищаем input
+    const char = value[value.length - 1]; 
+    e.currentTarget.value = ""; 
 
     setPressCount(prev => prev + 1);
 
     if (char === cymbols[textIndex]) {
-      // верная буква 
-      if (!startScript) setStartScript(true); // Запускаем таймер при первом верном нажатии
+      // Верная буква 
+      if (!startScript) setStartScript(true); 
 
       const newIndex = textIndex + 1;
       setTextIndex(newIndex);
 
       setCompleteCymbols(cymbols.slice(Math.max(0, newIndex - allCountCymbols), newIndex));
       setNextCymbols(cymbols.slice(newIndex, newIndex + allCountCymbols));
+
+      // ПРОВЕРКА НА КОНЕЦ ТЕКСТА
+      if (newIndex >= cymbols.length) {
+          setStartScript(false); // Останавливаем таймер
+          setIsFinished(true);   // Показываем экран результатов
+      }
+
     } 
     
     if ((startScript || char === cymbols[textIndex]) && char !== cymbols[textIndex]) {
-        // Если скрипт идет и ошибка, или первая буква и ошибка (но тут таймер еще не стартует обычно)
-        // Логику старта оставил как у вас: startScript становится true внутри if верной буквы.
-        // Значит, ошибки до первой верной буквы не считаем за старт, но failCount растет.
         if (startScript) setFailCount(prev => prev + 1);
     }
 
     // Расчет точности
-    // Формула: 100% - процент ошибок
     const total = pressCount + 1;
-    // (textIndex / total) * 100 - это "процент нажатий, которые продвинули курсор"
-    // Но лучше считать так:
-    setAccuracy((textIndex / total) * 100);
+    const calculatedAcc = 100 - ((failCount + (char !== cymbols[textIndex] ? 1 : 0)) / total * 100);
+    setAccuracy(Math.max(0, calculatedAcc));
   }
 
+  // РЕЗУЛЬТАТ ПОСЛЕ ФИНАЛА 
+  if (isFinished) {
+      return (
+        <div className={style.allTypingScriptMain}>
+            <div className={style.resultsContainer}>
+                <h2 className={style.resultsTitle}>Результат</h2>
+                
+                <div className={style.resultsGrid}>
+                    <div className={style.resultItem}>
+                        <span className={style.resultLabel}>WPM</span>
+                        <span className={`${style.resultValue} ${style.resultValuePurple}`}>{wpm}</span>
+                    </div>
+                    <div className={style.resultItem}>
+                        <span className={style.resultLabel}>Точность</span>
+                        <span className={style.resultValue}>{Math.trunc(accuracy)}%</span>
+                    </div>
+                    <div className={style.resultItem}>
+                        <span className={style.resultLabel}>Время</span>
+                        <span className={style.resultValue}>{seconds}s</span>
+                    </div>
+                    <div className={style.resultItem}>
+                        <span className={style.resultLabel}>Ошибки</span>
+                        <span className={`${style.resultValue} ${style.resultValuePink}`}>{failCount}</span>
+                    </div>
+                </div>
+
+                <RestartButton onButtonClick={handleReloadApp}/>
+            </div>
+        </div>
+      );
+  }
+
+  // --- ЭКРАН ПЕЧАТИ ---
   return (
     <div className={style.allTypingScriptMain}>
       
-      {/* 1. Блок статистики перенесен НАВЕРХ */}
+      {/* Статистика сверху */}
       <div className={style.statsRow}>
           <div className={style.statPill}>
              Время : {seconds} S
@@ -128,7 +160,7 @@ const AllTypingScript: React.FC<Props> = ({ text }) => {
           </div>
       </div>
 
-      {/* 2. Поле ввода (ОСТАЛОСЬ БЕЗ ИЗМЕНЕНИЙ) */}
+      {/* Поле ввода */}
       <div className={style.typingScriptInput} onClick={() => inputRef.current?.focus()}>
         <input
           ref={inputRef}
