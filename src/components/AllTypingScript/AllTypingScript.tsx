@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import style from './AllTypingScript.module.css';
 import RestartButton from '../RestartButton/RestartButton';
+import InfoButton from '../InfoButton/InfoButton';
 
 interface Props { text?: string }
 
@@ -159,7 +160,9 @@ const AllTypingScript: React.FC<Props> = ({ text }) => {
              Точность : {Math.trunc(accuracy)}%
           </div>
       </div>
-
+      <div style={{ width: '1200px', display: 'flex', justifyContent: 'flex-start', marginBottom: '-20px', zIndex: 10 }}>
+        <InfoButton />
+      </div>
       {/* Поле ввода */}
       <div className={style.typingScriptInput} onClick={() => inputRef.current?.focus()}>
         <input
