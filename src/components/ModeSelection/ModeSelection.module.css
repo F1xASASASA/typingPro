@@ -1,17 +1,30 @@
 .modeSelection {
+  width: 1032px;
+  height: 80px;
   display: flex;
-  background-color: #3b3b5c;
-  border-radius: 10px;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  background-color: #071031;
+  border-radius: 30px;
   overflow: hidden;
+  margin-bottom: 40px;
 }
 
 .modeButton {
   background-color: transparent;
   border: none;
   padding: 10px 20px;
-  color: #e0e0e0;
+  color: #FFFFFF;
   font-size: 16px;
   outline: none;
+  text-decoration: none;
+  font-size: 24px;
+  transition: color 0.3s ease-in-out;
+}
+
+.modeButton:hover {
+  color: #00DFD8;
 }
 
 .modeButton:disabled {
@@ -20,7 +33,7 @@
 }
 
 .currentMode {
-  background-color: #9370db;
+  background-color: #8722C6;
   padding: 10px 20px;
   border-radius: 10px;
   font-size: 16px;

@@ -1,0 +1,66 @@
+.aiModeContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+}
+
+.inputWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  background-color: #1E2A58;
+  padding: 40px;
+  border-radius: 30px;
+  width: 800px;
+}
+
+.aiTitle {
+  font-size: 24px;
+  color: #00DFD8;
+  margin: 0;
+}
+
+.topicInput {
+  width: 100%;
+  padding: 15px;
+  font-size: 18px;
+  background-color: #3b3b5c;
+  border: 2px solid #555577;
+  border-radius: 15px;
+  color: white;
+  outline: none;
+  text-align: center;
+}
+
+.topicInput:focus {
+  border-color: #9370db;
+}
+
+.generateButton {
+  background-color: #8722C6;
+  border: none;
+  border-radius: 10px;
+  padding: 15px 40px;
+  font-size: 18px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.generateButton:hover {
+  opacity: 0.9;
+}
+
+.generateButton:disabled {
+  background-color: #555577;
+  cursor: wait;
+}
+
+.errorText {
+  color: #FF5A78;
+  font-size: 16px;
+}

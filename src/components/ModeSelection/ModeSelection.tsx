@@ -1,13 +1,20 @@
 import React from 'react';
 import styles from './ModeSelection.module.css';
+import { Link } from 'react-router-dom'; // Исправлен импорт (был react-router, в App.tsx используется react-router-dom)
 
 const ModeSelection: React.FC = () => {
   return (
     <div className={styles.modeSelection}>
-      <button className={styles.modeButton} disabled>максимум слов</button>
-      <div className={styles.currentMode}>Классический режим</div>
-      <button className={styles.modeButton} disabled>бесконечность</button>
-    </div>
+      <Link className={styles.modeButton} to="/ClassicMode">
+        Классический
+      </Link>
+      <Link className={styles.modeButton} to="/DailyMode">
+        Ежедневный
+      </Link>
+      <Link className={styles.modeButton} to="/AIMode">
+        AI
+      </Link>
+  </div>
   );
 };
 

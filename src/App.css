@@ -7,15 +7,22 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.vk-mini-app {
-  background-color: #1a1a2e;
-  color: #e0e0e0;
+.vk-mini-app-main {
+  background-color: #030718;
+  color: #ffffff;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding: 20px;
   box-sizing: border-box;
+}
+
+.app-wrapper {
+  height: 92vh;
+  max-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .app-main {
