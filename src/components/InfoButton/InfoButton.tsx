@@ -9,7 +9,7 @@ const InfoButton: React.FC = () => {
       <button 
         className={style.infoButton} 
         onClick={() => setIsOpen(true)}
-        title="Помощь и горячие клавиши"
+        title="Справка"
       >
         ?
       </button>
@@ -17,45 +17,63 @@ const InfoButton: React.FC = () => {
       {isOpen && (
         <div className={style.overlay} onClick={() => setIsOpen(false)}>
           <div className={style.modal} onClick={(e) => e.stopPropagation()}>
-            <h3 className={style.modalTitle}>Информация</h3>
             
-            <div className={style.modalContent}>
-              <p style={{marginTop: 20, fontSize: 14, color: '#aaa', textAlign: 'center'}}>
-                Как играть?
+            {/* Заголовок */}
+            <div className={style.modalHeader}>
+              <h3 className={style.modalTitle}>Как играть?</h3>
+              <div style={{color: '#555', cursor:'pointer'}} onClick={() => setIsOpen(false)}>✕</div>
+            </div>
+            
+            {/* Контент */}
+            <div className={style.modalScrollContent}>
+              
+              <div className={style.section}>
+                <div className={style.sectionTitle}>Основные правила</div>
+                <div className={style.textBlock}>
+                  <p>1. Кликните на поле с текстом или нажмите любую букву, чтобы начать.</p>
+                  <p>2. Печатайте символы, которые подсвечены <span className={style.highlight}>белым</span>.</p>
+                  <p>3. Ошибки не блокируют ввод, но снижают точность. Исправлять их (Backspace) не нужно — просто продолжайте печатать правильно.</p>
+                </div>
+              </div>
 
-Все просто:
+              <div className={style.section}>
+                <div className={style.sectionTitle}>Режимы игры</div>
+                <div className={style.modesGrid}>
+                  <div className={style.modeCard}>
+                    <span className={style.modeName}>Классика</span>
+                    <span className={style.modeDesc}>Случайные цитаты и предложения для разминки.</span>
+                  </div>
+                  <div className={style.modeCard}>
+                    <span className={style.modeName}>Ежедневный</span>
+                    <span className={style.modeDesc}>Один уникальный текст на сегодня от AI. Соревнуйтесь в <b>Лидерборде</b>!</span>
+                  </div>
+                  <div className={style.modeCard}>
+                    <span className={style.modeName}>AI Режим</span>
+                    <span className={style.modeDesc}>Введите любую тему, и нейросеть сгенерирует текст специально для вас.</span>
+                  </div>
+                </div>
+              </div>
 
-    Выберите режим: Цитата или На время.
-    Кликните на область с текстом (или нажмите Tab).
-    Начинайте печатать текст, который видите на экране.
-    Ошибки подсвечиваются красным. Используйте Backspace для исправления.
-    Тест завершится автоматически (по окончании текста или времени), либо вы можете нажать "Новый тест".
+              <div className={style.section}>
+                <div className={style.sectionTitle}>Статистика</div>
+                <div className={style.textBlock}>
+                  <p><b>WPM (Words Per Minute)</b> — ваша скорость. Считается по формуле: <i>(Кол-во символов / 5) / Время</i>.</p>
+                  <p><b>Точность</b> — процент правильных нажатий.</p>
+                </div>
+              </div>
 
-Режимы игры:
+              <div className={style.section}>
+                 <div className={style.sectionTitle}>Совет</div>
+                 <div className={style.textBlock}>
+                    Старайтесь не смотреть на клавиатуру и держите пальцы в исходной позиции <b>ФЫВА — ОЛДЖ</b>. Скорость придет со временем, главное — ритм.
+                 </div>
+              </div>
 
-    Цитата: Наберите предложенный текст как можно быстрее и точнее. Время не ограничено, но учитывается при расчете WPM.
-    На время: Наберите как можно больше символов за 60 секунд. Точность также важна!
-
-Что такое WPM?
-
-WPM (Words Per Minute) - скорость печати, измеряемая в словах в минуту. Условно считается, что одно "слово" равно 5 символам (включая пробелы).
-
-    WPM (чистый): Рассчитывается на основе правильно набранных символов.
-    Raw WPM (сырой): Рассчитывается на основе всех набранных символов (включая ошибки).
-
-Точность
-
-Процент правильно набранных символов от общего числа попыток ввода (без учета Backspace).
-Советы:
-
-    Старайтесь не смотреть на клавиатуру.
-    Держите пальцы в исходной позиции (ФЫВА ОЛДЖ).
-    Практикуйтесь регулярно!
-              </p>
             </div>
 
+            {/* Кнопка закрытия */}
             <button className={style.closeButton} onClick={() => setIsOpen(false)}>
-              Понятно
+              Все понятно, поехали!
             </button>
           </div>
         </div>

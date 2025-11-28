@@ -1,26 +1,27 @@
 /* Кнопка с вопросом */
 .infoButton {
-  width: 30px;
-  height: 30px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
-  border: 2px solid #ffffff;
-  background-color: transparent;
-  color: #ffffff;
-  font-size: 18px;
+  border: 2px solid #5d4891;
+  background-color: rgba(30, 42, 88, 0.8);
+  color: #00DFD8;
+  font-size: 20px;
   font-weight: bold;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
   transition: all 0.3s ease;
-  opacity: 0.7;
+  box-shadow: 0 0 10px rgba(0, 223, 216, 0.1);
 }
 
 .infoButton:hover {
-  background-color: #ffffff;
+  background-color: #00DFD8;
   color: #1a1a2e;
-  opacity: 1;
-  transform: scale(1.1);
+  border-color: #00DFD8;
+  transform: scale(1.1) rotate(10deg);
+  box-shadow: 0 0 20px rgba(0, 223, 216, 0.4);
 }
 
 /* --- МОДАЛЬНОЕ ОКНО --- */
@@ -30,79 +31,161 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.7); /* Затемнение фона */
-  backdrop-filter: blur(5px);
+  background-color: rgba(13, 13, 21, 0.85); /* Сильное затемнение */
+  backdrop-filter: blur(8px);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 2000;
   animation: fadeIn 0.3s ease;
 }
 
 .modal {
-  background-color: #1E2A58; /* Твой основной цвет фона */
+  background-color: #1E2A58;
   border: 2px solid #5d4891;
-  border-radius: 20px;
-  padding: 30px;
-  width: 400px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-  position: relative;
+  border-radius: 30px;
+  padding: 0; /* Паддинг убрал, чтобы скролл был красивым */
+  width: 700px; /* Сделали пошире */
+  max-height: 85vh; /* Чтобы влезало на ноутбуки */
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  overflow: hidden; /* Скрываем вылезающее */
   animation: scaleUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Шапка модалки */
+.modalHeader {
+  padding: 25px 30px;
+  border-bottom: 2px solid #2b2b45;
+  background-color: #24243e;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .modalTitle {
   color: #fff;
   font-size: 24px;
   margin: 0;
-  text-align: center;
-  border-bottom: 1px solid #5d4891;
-  padding-bottom: 15px;
+  font-weight: 700;
+  letter-spacing: 1px;
 }
 
-.modalContent {
+/* Контент со скроллом */
+.modalScrollContent {
+  padding: 30px;
+  overflow-y: auto;
   color: #e0e0e0;
   font-size: 16px;
   line-height: 1.6;
 }
 
-.hotkey {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
+/* Кастомный скроллбар */
+.modalScrollContent::-webkit-scrollbar {
+  width: 8px;
+}
+.modalScrollContent::-webkit-scrollbar-track {
+  background: #1E2A58; 
+}
+.modalScrollContent::-webkit-scrollbar-thumb {
+  background: #5d4891; 
+  border-radius: 4px;
+}
+.modalScrollContent::-webkit-scrollbar-thumb:hover {
+  background: #9370db; 
 }
 
-.key {
+/* Секции текста */
+.section {
+  margin-bottom: 30px;
+}
+
+.sectionTitle {
+  color: #9370db;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.textBlock {
+  color: #ccc;
+  font-size: 15px;
+}
+
+/* Сетка режимов */
+.modesGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.modeCard {
   background-color: #2b2b45;
-  padding: 2px 8px;
-  border-radius: 5px;
+  padding: 15px;
+  border-radius: 15px;
+  border: 1px solid #3b3b5c;
+  transition: transform 0.2s;
+}
+
+.modeCard:hover {
+  transform: translateY(-3px);
+  border-color: #00DFD8;
+}
+
+.modeName {
+  display: block;
   color: #00DFD8;
+  font-weight: bold;
+  margin-bottom: 8px;
+  font-size: 16px;
+}
+
+.modeDesc {
+  font-size: 13px;
+  color: #a0a0c0;
+  line-height: 1.4;
+}
+
+/* Подсветка в тексте */
+.highlight {
+  color: #ffffff;
+  background-color: rgba(147, 112, 219, 0.2);
+  padding: 2px 6px;
+  border-radius: 4px;
   font-family: monospace;
 }
 
+/* Кнопка закрытия */
 .closeButton {
   background-color: #9370db;
   color: white;
   border: none;
-  padding: 10px;
-  border-radius: 10px;
-  cursor: pointer;
+  padding: 15px;
+  font-size: 16px;
   font-weight: bold;
-  transition: opacity 0.2s;
+  cursor: pointer;
+  transition: background 0.3s;
+  width: 100%;
+  border-top: 2px solid #2b2b45;
 }
 
 .closeButton:hover {
-  opacity: 0.9;
+  background-color: #7b5cbd;
 }
 
+/* Анимации */
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
 }
 
 @keyframes scaleUp {
-  from { transform: scale(0.8); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
+  from { transform: scale(0.9) translateY(20px); opacity: 0; }
+  to { transform: scale(1) translateY(0); opacity: 1; }
 }
