@@ -1,12 +1,11 @@
 .appHeader {
   width: 100%;
-  max-width: 600px;
+  height: 70px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  margin-bottom: 40px;
-  padding: 0 10px;
   box-sizing: border-box;
+  background-color: #071031;
 }
 
 .appTitle {
@@ -15,8 +14,18 @@
   color: #9370db;
 }
 
+.TitleSpanLeft {
+  color: #00DFD8;
+  text-shadow: 0px 4px 4px rgb(0, 233, 216, 0.25);
+}
+
+.TitleSpanRight {
+  color: #FF5A78;
+  text-shadow: 0px 4px 4px rgb(0, 233, 216, 0.25);
+}
+
 .helpButton {
-  background-color: #3b3b5c;
+  background-color: #071031;
   border: none;
   border-radius: 50%;
   width: 30px;

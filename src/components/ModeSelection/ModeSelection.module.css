@@ -1,29 +1,66 @@
 .modeSelection {
-  display: flex;
-  background-color: #3b3b5c;
-  border-radius: 10px;
-  overflow: hidden;
+  position: relative; /* Важно для позиционирования слайдера */
+  width: 1032px;
+  height: 80px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
+  justify-items: center;
+
+  background-color: #38205970;
+  border-radius: 30px;
+  margin-bottom: 40px;
+  padding: 5px;
+  box-sizing: border-box;
+}
+
+.slider {
+  position: absolute;
+  top: 5px;
+  bottom: 5px;
+  left: 5px;
+  width: calc((100% - 10px) / 3);
+  background-color: #9370db;
+  border-radius: 25px;
+  z-index: 0;
+  transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1), opacity 0.2s ease;
+  box-shadow: 0 4px 15px rgba(147, 112, 219, 0.4);
 }
 
 .modeButton {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
   background-color: transparent;
   border: none;
-  padding: 10px 20px;
-  color: #e0e0e0;
-  font-size: 16px;
+  
+  color: #FFFFFF;
+  font-size: 24px;
+  font-weight: 500;
+  text-decoration: none;
+  
+  transition: color 0.3s ease-in-out;
+  cursor: pointer;
   outline: none;
+}
+
+.modeButton:hover {
+  color: #00DFD8;
+}
+
+.modeButtonActive {
+  color: #FFFFFF !important;
+  font-weight: bold;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
 .modeButton:disabled {
   cursor: default;
   opacity: 0.7;
-}
-
-.currentMode {
-  background-color: #9370db;
-  padding: 10px 20px;
-  border-radius: 10px;
-  font-size: 16px;
-  font-weight: bold;
-  pointer-events: none;
 }

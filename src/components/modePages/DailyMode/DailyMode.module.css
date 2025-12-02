@@ -1,0 +1,48 @@
+.dailyModeContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 200px;
+}
+
+.loadingWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  font-size: 20px;
+  color: #00DFD8;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid #3b3b5c;
+  border-top: 5px solid #9370db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.dailyTitle {
+  font-size: 24px;
+  color: #fff;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.dailyDate {
+  color: #9370db;
+  font-weight: bold;
+}
+
+.errorText {
+  color: #FF5A78;
+  margin-top: 20px;
+}
