@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import style from './AIMode.module.css';
 import AllTypingScript from '../../AllTypingScript/AllTypingScript';
 
-// ТВОИ ДАННЫЕ ИЗ PYTHON СКРИПТА
-const API_KEY = "AQVN2bO6XJGfWdVb-1ETP6RATVFOmUvBIxFSfNK5";
+// Ссылка на твой PHP-прокси на Reg.ru
+const PROXY_URL = "https://midisbessmertnipolk.online/ai-proxy.php";
+// ID промта (его можно оставить на клиенте, это не секрет)
 const PROMPT_ID = "fvt3idp10tsneila6o53";
 
 const AIMode: React.FC = () => {
@@ -19,8 +20,6 @@ const AIMode: React.FC = () => {
     setError("");
     setGeneratedText(null);
 
-    const url = "/yandex-api/v1/responses";
-
     const dataBody = {
       prompt: {
         id: PROMPT_ID
@@ -29,10 +28,11 @@ const AIMode: React.FC = () => {
     };
 
     try {
-      const response = await fetch(url, {
+      // Делаем запрос на ТВОЙ сервер, а не в Яндекс напрямую
+      const response = await fetch(PROXY_URL, {
         method: "POST",
         headers: {
-          "Authorization": `Api-Key ${API_KEY}`,
+          // Authorization здесь больше не нужен, он внутри PHP файла
           "Content-Type": "application/json"
         },
         body: JSON.stringify(dataBody)
@@ -40,13 +40,16 @@ const AIMode: React.FC = () => {
 
       if (response.ok) {
         const result = await response.json();
-        // Путь к тексту: output -> [0] -> content -> [0] -> text
-        const textResponse = result.output?.[0]?.content?.[0]?.text;
+        
+        // Пытаемся достать текст. Структура зависит от того, как отвечает Яндекс через PHP
+        // Обычно это result.output[0]... или result.result...
+        const textResponse = result.output?.[0]?.content?.[0]?.text || result.result?.alternatives?.[0]?.message?.text;
 
         if (textResponse) {
-          // Очищаем текст от лишних переносов строк, если нужно
+          // Очищаем текст от лишних переносов строк
           setGeneratedText(textResponse.replace(/\n/g, ' '));
         } else {
+          console.log("Ответ сервера:", result);
           setError("Нейросеть вернула пустой ответ.");
         }
       } else {
@@ -96,9 +99,6 @@ const AIMode: React.FC = () => {
       {/* Если текст готов, запускаем тренажер */}
       {generatedText && (
         <>
-           {/* Кнопка "Назад" или "Новая тема" может быть добавлена здесь, 
-               но AllTypingScript имеет свою кнопку рестарта. 
-               Мы можем добавить кнопку сброса выше тренажера, если нужно. */}
            <button onClick={handleReset} style={{marginBottom: '20px', background: 'transparent', border: '1px solid #555', color:'#fff', padding: '5px 10px', borderRadius:'10px', cursor:'pointer'}}>
              ← Выбрать другую тему
            </button>

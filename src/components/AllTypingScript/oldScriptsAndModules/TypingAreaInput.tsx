@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import style from './TypingArea.module.css';
-import { CounterProps } from '@vkontakte/vkui';
 
 interface TypingAreaProps {
   onFailCountChange?: (failCount: number) => void;
@@ -20,7 +19,6 @@ const TypingAreaInput: React.FC<TypingAreaProps> = ({ onFailCountChange, onAccur
   const [nextCymbols, setNextCymbols] = useState<string[]>([]);
   const [completeCymbols, setCompleteCymbols] = useState<string[]>([]);
   const [seconds, setSeconds] = useState(0);
-  const [RBC, setRBC] = useState(false);
 
 
 
@@ -29,8 +27,8 @@ const TypingAreaInput: React.FC<TypingAreaProps> = ({ onFailCountChange, onAccur
   const [pressCount, setPressCount] = useState(0);
   const [accuracy, setAccuracy] = useState(0);
   const [startScript, setStartScript] = useState<boolean>(false)
-  const [countPerSecond, setCountPerSecond] = useState<number>(0)
-  const [allCountCymbols, setAllCountCymbols] = useState<number>(45)
+  const [countPerSecond] = useState<number>(0)
+  const [allCountCymbols] = useState<number>(45)
 
   const inputRef = useRef<HTMLInputElement>(null);
 

@@ -12,7 +12,7 @@ interface Props {
 const AllTypingScript: React.FC<Props> = ({ text, onGameEnd }) => {
   const [comfirmText, setComfirmText] = useState("");
   // Количество символов слева и справа
-  const [allCountCymbols, setAllCountCymbols] = useState<number>(45);
+  const [allCountCymbols] = useState<number>(45);
 
   useEffect(() => {
     if (text) {

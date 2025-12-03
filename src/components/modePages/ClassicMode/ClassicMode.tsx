@@ -1,6 +1,5 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import style from './ClassicMode.module.css';
 import AllTypingScript from "../../AllTypingScript/AllTypingScript"
 
 

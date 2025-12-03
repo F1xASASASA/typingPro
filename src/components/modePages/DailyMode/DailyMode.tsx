@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import style from './DailyMode.module.css';
 import AllTypingScript from '../../AllTypingScript/AllTypingScript';
 
-// ТВОИ ДАННЫЕ
-const API_KEY = "AQVN2bO6XJGfWdVb-1ETP6RATVFOmUvBIxFSfNK5";
+// Ссылка на твой PHP-прокси
+const PROXY_URL = "https://midisbessmertnipolk.online/ai-proxy.php";
 const PROMPT_ID = "fvt3idp10tsneila6o53";
 
 const STORAGE_KEY = 'daily_mode_data';
@@ -18,19 +18,15 @@ const DailyMode: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
 
-  // Вычисляем дату
   const currentDate = new Date().toLocaleDateString('ru-RU');
-
-  // --- ВОТ КОНСОЛЬ ЛОГ ---
   console.log("Текущая дата:", currentDate);
-  // -----------------------
 
   useEffect(() => {
     loadDailyText();
   }, []);
 
   const loadDailyText = async () => {
-    // 1. Определяем текущую дату (формат ДД.ММ.ГГГГ)
+    // 1. Определяем текущую дату
     const today = new Date().toLocaleDateString('ru-RU');
     
     // 2. Смотрим, что есть в локальном хранилище
@@ -47,19 +43,16 @@ const DailyMode: React.FC = () => {
       }
     }
 
-    // 3. Если записи нет или дата устарела — делаем запрос к AI
+    // 3. Если записи нет или дата устарела — делаем запрос к прокси
     await fetchNewDailyText(today);
   };
 
   const fetchNewDailyText = async (todayDate: string) => {
     setLoading(true);
     setError("");
-
-    // Используем наш PROXY путь
-    const url = "/yandex-api/v1/responses"; 
     
     // Жестко заданный промт для ежедневного задания
-    const dailyPromptInput = "Напиши текст до 400 символов не используя тире и ковычки,не начинай словом в далёкой, делай текст разнообразным, не повторяясь с тем что ты уже мог писать, и чтобы текст было ИНТЕРЕСНО читать и писать";
+    const dailyPromptInput = "Напиши текст до 400 символов не используя тире и ковычки, не начинай словом в далёкой, делай текст разнообразным, не повторяясь с тем что ты уже мог писать, и чтобы текст было ИНТЕРЕСНО читать и писать";
 
     const dataBody = {
       prompt: { id: PROMPT_ID },
@@ -67,21 +60,22 @@ const DailyMode: React.FC = () => {
     };
 
     try {
-      const response = await fetch(url, {
+      // Запрос на твой сервер
+      const response = await fetch(PROXY_URL, {
         method: "POST",
         headers: {
-          "Authorization": `Api-Key ${API_KEY}`,
           "Content-Type": "application/json"
+          // Authorization удален
         },
         body: JSON.stringify(dataBody)
       });
 
       if (response.ok) {
         const result = await response.json();
-        const aiText = result.output?.[0]?.content?.[0]?.text;
+        const aiText = result.output?.[0]?.content?.[0]?.text || result.result?.alternatives?.[0]?.message?.text;
 
         if (aiText) {
-          // Чистим текст от лишних переносов
+          // Чистим текст
           const cleanText = aiText.replace(/\n/g, ' ').trim();
           
           setText(cleanText);
