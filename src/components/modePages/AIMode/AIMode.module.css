@@ -4,6 +4,8 @@
   align-items: center;
   gap: 20px;
   width: 100%;
+  padding: 0 10px;
+  box-sizing: border-box;
 }
 
 .inputWrapper {
@@ -14,13 +16,17 @@
   background-color: #1E2A58;
   padding: 40px;
   border-radius: 30px;
-  width: 800px;
+  width: 100%;
+  max-width: 800px; /* Широкий на ПК */
+  box-sizing: border-box;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
 
 .aiTitle {
   font-size: 24px;
   color: #00DFD8;
   margin: 0;
+  text-align: center;
 }
 
 .topicInput {
@@ -33,6 +39,7 @@
   color: white;
   outline: none;
   text-align: center;
+  box-sizing: border-box;
 }
 
 .topicInput:focus {
@@ -49,18 +56,23 @@
   font-weight: bold;
   cursor: pointer;
   transition: opacity 0.2s;
+  width: 100%;
+  max-width: 300px;
 }
 
-.generateButton:hover {
-  opacity: 0.9;
-}
-
-.generateButton:disabled {
-  background-color: #555577;
-  cursor: wait;
-}
+.generateButton:hover { opacity: 0.9; }
+.generateButton:disabled { background-color: #555577; cursor: wait; }
 
 .errorText {
   color: #FF5A78;
   font-size: 16px;
+  text-align: center;
+}
+
+/* --- АДАПТИВ --- */
+@media (max-width: 600px) {
+  .inputWrapper { padding: 25px; border-radius: 20px; }
+  .aiTitle { font-size: 20px; }
+  .topicInput { font-size: 16px; padding: 12px; }
+  .generateButton { padding: 12px; font-size: 16px; }
 }

@@ -393,3 +393,262 @@
   color: #FF5A78; /* Розовый для Ошибок */
   text-shadow: 0 0 10px rgba(255, 90, 120, 0.3);
 }
+.allTypingScriptMain {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  width: 100%; /* Добавлено для центровки */
+}
+
+/* Статистика сверху */
+.statsRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.statPill {
+  border: 1px solid #5d4891;
+  border-radius: 30px;
+  padding: 10px 30px;
+  font-size: 18px;
+  color: #e0e0e0;
+  background-color: transparent;
+  min-width: 150px;
+  text-align: center;
+}
+
+.statPillMain {
+  border: 1px solid #5d4891;
+  background-color: #0d0d15;
+  border-radius: 40px;
+  padding: 15px 50px;
+  font-size: 24px;
+  color: #ffffff;
+  min-width: 300px;
+  text-align: center;
+}
+
+/* Поле ввода */
+.typingScriptInput {
+  width: 1200px; /* ПК размер */
+  height: 100px;
+  max-height: 100px;
+  padding: 20px;
+  
+  display: flex; 
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  background-color: #1E2A58;
+
+  border-radius: 60px;
+  box-sizing: border-box;
+  white-space: preserve nowrap;
+
+  font-size: 20px;
+  font-weight: 400;
+  overflow: hidden; /* Важно для обрезки длинного текста */
+}
+
+.typingScriptMain {
+  display: flex;
+  flex-direction: row;
+  justify-content: center; /* Центрируем */
+  align-items: center;
+  width: 100%;
+}
+
+.typingInput {
+  width: 100%;
+  background-color: transparent;
+  border: none;
+  color: #e0e0e0;
+  font-size: 26px;
+  outline: none;
+  text-align: center;
+  padding: 0;
+}
+
+/* Стили для текста ПК (жесткие размеры) */
+.completeCymbols {
+  min-width: 600px;
+  color: #00DFD8;
+  flex-wrap: nowrap;
+  text-align: right;
+}
+
+.cutterCymbols {
+  background-color: #00DFD8;
+  width: 2px;
+  min-width: 2px;
+  height: 50px;
+  max-height: 50px;
+}
+
+.nextCymbols {
+  min-width: 600px;
+  flex-wrap: nowrap;
+  text-align: left;
+}
+
+.hiddenInput {
+  opacity: 0;
+  position: absolute;
+  pointer-events: none;
+  /* Добавляем чтобы на айфоне не зумило при фокусе */
+  font-size: 16px; 
+}
+
+/* Результаты (ПК) */
+.resultsContainer {
+  width: 900px;
+  background-color: #1E2A58;
+  border: 2px solid #5d4891;
+  border-radius: 40px;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+.resultsTitle {
+  font-size: 42px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.resultsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 20px;
+  width: 100%;
+}
+
+.resultItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #2b2b45;
+  border-radius: 20px;
+  padding: 20px 10px;
+}
+
+.resultLabel {
+  font-size: 16px;
+  color: #a0a0c0;
+  margin-bottom: 8px;
+}
+
+.resultValue {
+  font-size: 36px;
+  font-weight: bold;
+  color: #00DFD8;
+}
+.resultValuePurple { color: #9370db; font-size: 48px; }
+.resultValuePink { color: #FF5A78; }
+
+
+/* --- АДАПТИВ (ТОЛЬКО ДЛЯ ТЕЛЕФОНОВ И ПЛАНШЕТОВ) --- */
+@media (max-width: 1250px) {
+  /* Поле ввода */
+  .typingScriptInput {
+    width: 95%; /* Сжимаем до ширины экрана */
+    border-radius: 30px;
+    height: 80px;
+    padding: 0 10px;
+  }
+
+  /* Сбрасываем жесткие min-width 600px, которые ломают телефон */
+  .completeCymbols, .nextCymbols {
+    min-width: 0; 
+    width: 50%; /* Делим экран пополам */
+    overflow: hidden; /* Скрываем то, что не влезает */
+    white-space: pre;
+  }
+  
+  .cutterCymbols {
+    height: 30px; /* Чуть меньше курсор */
+  }
+
+  /* Статистика сверху */
+  .statsRow {
+    flex-wrap: wrap; /* Разрешаем перенос */
+    gap: 10px;
+  }
+  
+  .statPill {
+    font-size: 14px;
+    padding: 8px 15px;
+    min-width: 30%;
+    flex: 1;
+  }
+  
+  .statPillMain {
+    width: 100%;
+    min-width: auto;
+    order: -1; /* WPM поднимаем наверх на отдельную строку */
+    padding: 10px;
+    font-size: 20px;
+  }
+
+  /* Результаты */
+  .resultsContainer {
+    width: 95%;
+    padding: 20px;
+    border-radius: 25px;
+  }
+  
+  .resultsTitle {
+    font-size: 28px;
+  }
+
+  .resultsGrid {
+    grid-template-columns: 1fr 1fr; /* 2 колонки вместо 4 */
+    gap: 10px;
+  }
+  
+  .resultValue { font-size: 28px; }
+  .resultValuePurple { font-size: 32px; }
+}
+.infoWrapper {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: -30px; /* Чтобы "наезжало" на инпут */
+  padding-left: 20px;
+  z-index: 5;
+  position: relative;
+  box-sizing: border-box;
+}
+
+/* Адаптив для мобильных: фиксируем кнопку внизу справа */
+@media (max-width: 800px) {
+  .infoWrapper {
+    position: fixed; /* Фиксируем относительно экрана */
+    bottom: 20px;    /* Отступ снизу */
+    right: 20px;     /* Отступ справа */
+    
+    /* Сбрасываем ПК стили */
+    left: auto;
+    top: auto;
+    width: auto;
+    margin-bottom: 0;
+    padding-left: 0;
+    justify-content: center;
+    z-index: 1000; /* Чтобы была поверх всего */
+  }
+}

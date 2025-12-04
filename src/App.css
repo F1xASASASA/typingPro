@@ -14,6 +14,7 @@ body {
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
+  overflow-x: hidden; /* Запрет горизонтального скролла */
 }
 
 .app-wrapper {
@@ -23,13 +24,30 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  /* Адаптив добавляем ниже */
 }
 
 .app-main {
   width: 100%;
-  max-width: 600px;
+  max-width: 600px; /* Внимание: у тебя тут 600px, но дети имеют 1200px. Flex позволяет им вылезать. Оставляем как есть, чтобы не сломать ПК */
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 30px;
+}
+
+/* --- АДАПТИВ --- */
+@media (max-width: 800px) {
+  .app-wrapper {
+    height: auto; /* Разрешаем растягиваться по высоте контента */
+    max-height: none;
+    padding: 20px 0;
+    justify-content: flex-start;
+  }
+  
+  .app-main {
+    max-width: 100%; /* Разрешаем блоку занимать всю ширину */
+    padding: 0 10px;
+    box-sizing: border-box;
+  }
 }

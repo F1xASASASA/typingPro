@@ -1,0 +1,16 @@
+.classicContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* --- АДАПТИВ ДЛЯ МОБИЛЬНЫХ И ПЛАНШЕТОВ --- */
+@media (max-width: 1250px) {
+  .classicContainer {
+    width: 100%;
+    padding: 0 10px; /* Небольшие отступы по краям, чтобы не прилипало */
+  }
+}

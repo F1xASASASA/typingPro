@@ -3,14 +3,16 @@
   justify-content: center;
   align-items: flex-start;
   padding-top: 40px;
+  width: 100%; /* Важно */
 }
 
 .infoBox {
-  width: 1000px; 
+  width: 1000px; /* ПК размер */
   border: 1px solid #8722C6;
   border-radius: 40px;
   overflow: hidden;
   box-shadow: 0 0 30px rgba(93, 72, 145, 0.15);
+  background-color: #1E2A58; /* Добавляем фон */
 }
 
 .titleSection {
@@ -55,4 +57,33 @@
   color: #a0a0c0;
   font-size: 20px;
   margin-top: 10px;
+}
+
+/* --- АДАПТИВ --- */
+@media (max-width: 1050px) {
+  .welcomeContainer {
+    padding-top: 20px;
+  }
+
+  .infoBox {
+    width: 90%; /* Отступы по краям */
+    border-radius: 20px;
+  }
+
+  .contentSection {
+    padding: 30px 20px;
+    gap: 20px;
+  }
+
+  .title {
+    font-size: 24px;
+  }
+
+  .text {
+    font-size: 16px;
+  }
+
+  .subText {
+    font-size: 14px;
+  }
 }

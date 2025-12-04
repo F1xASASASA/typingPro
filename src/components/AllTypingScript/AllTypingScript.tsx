@@ -12,7 +12,26 @@ interface Props {
 const AllTypingScript: React.FC<Props> = ({ text, onGameEnd }) => {
   const [comfirmText, setComfirmText] = useState("");
   // Количество символов слева и справа
-  const [allCountCymbols] = useState<number>(45);
+// Функция для определения количества символов по ширине экрана
+  const getCymbolsCount = () => {
+    const width = window.innerWidth;
+    if (width <= 600) return 15;   // Мобильный
+    if (width <= 1250) return 35;  // Планшет
+    return 55;                     // ПК
+  };
+
+  // Инициализируем состояние значением, зависящим от экрана
+  const [allCountCymbols, setAllCountCymbols] = useState<number>(getCymbolsCount());
+
+  // Следим за изменением размера окна (например, поворот телефона)
+  useEffect(() => {
+    const handleResize = () => {
+      setAllCountCymbols(getCymbolsCount());
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     if (text) {
@@ -183,7 +202,7 @@ console.log(text);
       </div>
 
       {/* Кнопка Инфо */}
-      <div style={{ width: '1200px', display: 'flex', justifyContent: 'flex-start', marginBottom: '-30px', paddingLeft: '20px', zIndex: 5 }}>
+      <div className={style.infoWrapper}>
         <InfoButton />
       </div>
 

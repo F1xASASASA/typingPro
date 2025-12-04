@@ -1,6 +1,6 @@
 .modeSelection {
-  position: relative; /* Важно для позиционирования слайдера */
-  width: 1032px;
+  position: relative;
+  width: 1032px; /* ПК размер остался */
   height: 80px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -48,6 +48,7 @@
   transition: color 0.3s ease-in-out;
   cursor: pointer;
   outline: none;
+  white-space: nowrap; /* Чтобы текст не ехал на ПК */
 }
 
 .modeButton:hover {
@@ -63,4 +64,29 @@
 .modeButton:disabled {
   cursor: default;
   opacity: 0.7;
+}
+
+/* --- АДАПТИВ (Планшеты и Телефоны) --- */
+@media (max-width: 1050px) {
+  .modeSelection {
+    width: 95%; /* Растягиваем на всю ширину экрана */
+    height: 60px; /* Делаем чуть ниже */
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+
+  .slider {
+    border-radius: 15px;
+  }
+
+  .modeButton {
+    font-size: 14px; /* Уменьшаем шрифт, чтобы влезло */
+  }
+}
+
+@media (max-width: 400px) {
+  /* Для совсем узких телефонов */
+  .modeButton {
+    font-size: 12px;
+  }
 }

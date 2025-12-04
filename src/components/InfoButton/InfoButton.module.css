@@ -38,19 +38,22 @@
   align-items: center;
   z-index: 2000;
   animation: fadeIn 0.3s ease;
+  padding: 10px; /* Важно: отступ от краев экрана на мобилке */
+  box-sizing: border-box;
 }
 
 .modal {
   background-color: #1E2A58;
   border: 2px solid #5d4891;
   border-radius: 30px;
-  padding: 0; /* Паддинг убрал, чтобы скролл был красивым */
-  width: 700px; /* Сделали пошире */
-  max-height: 85vh; /* Чтобы влезало на ноутбуки */
+  padding: 0; 
+  width: 100%;
+  max-width: 700px; /* На ПК ширина будет 700px */
+  max-height: 90vh; /* Чтобы не вылезало за высоту экрана */
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
   display: flex;
   flex-direction: column;
-  overflow: hidden; /* Скрываем вылезающее */
+  overflow: hidden; 
   animation: scaleUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
@@ -62,6 +65,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-shrink: 0;
 }
 
 .modalTitle {
@@ -120,7 +124,7 @@
 /* Сетка режимов */
 .modesGrid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr; /* На ПК 3 колонки */
   gap: 15px;
   margin-top: 10px;
 }
@@ -131,6 +135,7 @@
   border-radius: 15px;
   border: 1px solid #3b3b5c;
   transition: transform 0.2s;
+  box-sizing: border-box; /* Чтобы padding не увеличивал ширину */
 }
 
 .modeCard:hover {
@@ -173,6 +178,7 @@
   transition: background 0.3s;
   width: 100%;
   border-top: 2px solid #2b2b45;
+  flex-shrink: 0;
 }
 
 .closeButton:hover {
@@ -188,4 +194,36 @@
 @keyframes scaleUp {
   from { transform: scale(0.9) translateY(20px); opacity: 0; }
   to { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+/* --- АДАПТИВ ДЛЯ ТЕЛЕФОНОВ (ИСПРАВЛЕНИЕ БОЛЬШИХ БЛОКОВ) --- */
+@media (max-width: 700px) {
+  .modal {
+    width: 100%;
+    max-width: 100%; /* Разрешаем занимать всю ширину */
+    height: auto;
+    max-height: 90vh;
+    border-radius: 20px;
+  }
+
+  .modesGrid {
+    grid-template-columns: 1fr; /* ОДНА колонка вместо трех! */
+    gap: 10px;
+  }
+
+  .modalHeader {
+    padding: 15px 20px; /* Меньше отступы */
+  }
+
+  .modalTitle {
+    font-size: 20px;
+  }
+
+  .modalScrollContent {
+    padding: 15px 20px; /* Меньше отступы внутри */
+  }
+
+  .section {
+    margin-bottom: 20px;
+  }
 }

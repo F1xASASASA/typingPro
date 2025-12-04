@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import AllTypingScript from "../../AllTypingScript/AllTypingScript"
-
+import AllTypingScript from "../../AllTypingScript/AllTypingScript";
+import style from './ClassicMode.module.css'; // Импортируем стили
 
 const ClassicMode: React.FC = ({}) => {
 
@@ -18,12 +18,17 @@ const ClassicMode: React.FC = ({}) => {
 
         const randomLine = lines[Math.floor(Math.random() * lines.length)];
         setText(randomLine);
-      });
-  }, [text]);
+      })
+      .catch(err => console.error("Ошибка загрузки текста:", err));
+  }, []); // Убрал [text] из зависимостей, чтобы не циклило, оставил пустой массив для запуска 1 раз
 
   return (
-    <div>
-      <AllTypingScript text={text}/>
+    <div className={style.classicContainer}>
+      {text ? (
+        <AllTypingScript text={text}/>
+      ) : (
+        <div style={{color: '#fff', fontSize: '18px'}}>Загрузка классики...</div>
+      )}
     </div>
   );
 };
