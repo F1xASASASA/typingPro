@@ -16,8 +16,8 @@ const AllTypingScript: React.FC<Props> = ({ text, onGameEnd }) => {
   const getCymbolsCount = () => {
     const width = window.innerWidth;
     if (width <= 600) return 15;   // Мобильный
-    if (width <= 1250) return 35;  // Планшет
-    return 55;                     // ПК
+    if (width <= 1250) return 25;  // Планшет
+    return 45;                     // ПК
   };
 
   // Инициализируем состояние значением, зависящим от экрана
@@ -183,7 +183,7 @@ console.log(text);
         </div>
       );
   }
-
+  const charsLeft = comfirmText.length - textIndex;
   // --- ЭКРАН ПЕЧАТИ (ВО ВРЕМЯ ИГРЫ) ---
   return (
     <div className={style.allTypingScriptMain}>
@@ -192,6 +192,9 @@ console.log(text);
       <div className={style.statsRow}>
           <div className={style.statPill}>
              Время : {seconds} S
+          </div>
+          <div className={style.statPill}>
+             Осталось : {charsLeft}
           </div>
           <div className={style.statPillMain}>
              WPM (скорость) : {wpm}
