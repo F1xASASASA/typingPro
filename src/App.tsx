@@ -43,7 +43,7 @@ const App: React.FC = () => {
         <Header/>
         <div className='app-wrapper'>
           <ModeSelection/>
-          <main className="app-main" style={{ paddingBottom: '120px' }}>
+          <main className="app-main">
             <Routes>
               <Route index element={<WelcomePage/>} />
               <Route path='/welcomePage' element={<WelcomePage/>}/>
