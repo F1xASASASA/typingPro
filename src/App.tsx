@@ -1,31 +1,40 @@
-import React, { useEffect } from 'react';
+import React, {useEffect, useState } from 'react';
 import './App.css';
 import { HashRouter, Routes, Route } from 'react-router-dom';
-import vkBridge from '@vkontakte/vk-bridge';
 import { Header, ModeSelection } from './components';
 import WelcomePage from "./components/WelcomePage/WelcomePage";
 import DailyMode from './components/modePages/DailyMode/DailyMode';
 import ClassicMode from './components/modePages/ClassicMode/ClassicMode';
 import AIMode from './components/modePages/AIMode/AIMode';
+import bridge, { UserInfo } from '@vkontakte/vk-bridge';
+
 
 const App: React.FC = () => {
 
-  useEffect(() => {
-    vkBridge.send('VKWebAppInit');
+  const [] = useState('home');
+  const [, setUser] = useState<UserInfo | undefined>();
 
-    vkBridge.send('VKWebAppShowBannerAd', {
-      // ИСПРАВЛЕНИЕ ЗДЕСЬ: добавляем 'as const'c
-      banner_location: 'bottom' as any
-    })
-    .then((data) => { 
-      if (data.result) {
-        console.log('Баннер успешно показан');
-      }
-    })
-    .catch((error) => {
-      console.log('Ошибка показа баннера:', error);
-    });
-  }, []);
+
+
+	useEffect(() => {
+		async function fetchData() {
+			const user = await bridge.send('VKWebAppGetUserInfo');
+			setUser(user);
+		}
+		fetchData();
+
+		bridge.send<any>('VKWebAppShowBannerAd', {
+			banner_location: 'bottom',
+		   })
+			.then((data) => {
+				if (data.result) {
+		   }
+			})
+			.catch((error) => {
+			   console.log(error);
+			});
+	}, []);
+
 
 
   return (
@@ -51,3 +60,4 @@ const App: React.FC = () => {
 };
 
 export default App;
+
