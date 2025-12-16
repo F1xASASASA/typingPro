@@ -210,7 +210,6 @@
   align-items: center;
   gap: 20px;
   width: 100%;
-  margin-bottom: 10px;
 }
 
 /* Маленькие капсулы (Время, Точность) */
@@ -410,7 +409,6 @@
   align-items: center;
   gap: 20px;
   width: 100%;
-  margin-bottom: 10px;
 }
 
 .statPill {

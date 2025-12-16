@@ -18,11 +18,11 @@ body {
 }
 
 .app-wrapper {
-  height: 92vh;
+  padding-top: 20px;
   max-height: 92vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
   /* Адаптив добавляем ниже */
 }
