@@ -15,13 +15,13 @@
   },
   "dependencies": {
     "@vkontakte/icons": "^3.1.1",
-    "@vkontakte/vk-bridge": "^2.13.0",
+    "@vkontakte/vk-bridge": "^2.15.10",
     "@vkontakte/vk-bridge-react": "^1.0.1",
     "@vkontakte/vk-mini-apps-router": "^1.7.6",
     "@vkontakte/vkui": "^7.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router": "^7.10.1",
+    "react-router": "^7.11.0",
     "react-router-dom": "^7.9.6"
   },
   "devDependencies": {

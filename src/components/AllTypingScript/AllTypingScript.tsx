@@ -2,17 +2,28 @@ import React, { useState, useEffect, useRef } from 'react';
 import style from './AllTypingScript.module.css';
 import RestartButton from '../RestartButton/RestartButton';
 import InfoButton from '../InfoButton/InfoButton';
+import { useTokens } from '../../context/TokenContext';
+
+// Интерфейс для модификаторов
+export interface GameModifiers {
+  hardcore: boolean;
+  hideCompleted: boolean;
+}
 
 interface Props { 
     text?: string;
-    // Callback функция, вызываемая при завершении игры
     onGameEnd?: (wpm: number) => void; 
+    modifiers?: GameModifiers; // Проп для настроек
 }
 
-const AllTypingScript: React.FC<Props> = ({ text, onGameEnd }) => {
+const AllTypingScript: React.FC<Props> = ({ text, onGameEnd, modifiers }) => {
+  // --- ЛОГИКА ТОКЕНОВ ---
+  const { addToken } = useTokens();
+  const [rewardGiven, setRewardGiven] = useState(false);
+
   const [comfirmText, setComfirmText] = useState("");
-  // Количество символов слева и справа
-// Функция для определения количества символов по ширине экрана
+
+  // --- ТВОЯ ЛОГИКА АДАПТИВНОСТИ ---
   const getCymbolsCount = () => {
     const width = window.innerWidth;
     if (width <= 600) return 15;   // Мобильный
@@ -20,25 +31,23 @@ const AllTypingScript: React.FC<Props> = ({ text, onGameEnd }) => {
     return 45;                     // ПК
   };
 
-  // Инициализируем состояние значением, зависящим от экрана
   const [allCountCymbols, setAllCountCymbols] = useState<number>(getCymbolsCount());
 
-  // Следим за изменением размера окна (например, поворот телефона)
   useEffect(() => {
     const handleResize = () => {
       setAllCountCymbols(getCymbolsCount());
     };
-
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+  // ------------------------------
 
   useEffect(() => {
     if (text) {
       setComfirmText(text);
     }
   }, [text]);
-console.log(text);
+
   // Сброс при смене текста
   useEffect(() => {
     if (comfirmText.length === 0) return;
@@ -47,7 +56,6 @@ console.log(text);
   
 
   const cymbols = comfirmText.split('');
-
   const [textIndex, setTextIndex] = useState(0);
   const [nextCymbols, setNextCymbols] = useState<string[]>([]);
   const [completeCymbols, setCompleteCymbols] = useState<string[]>([]);
@@ -60,7 +68,7 @@ console.log(text);
   const [wpm, setWpm] = useState(0);
   const [startScript, setStartScript] = useState<boolean>(false);
   
-  // Состояние завершения (показывает модалку)
+  // Состояние завершения
   const [isFinished, setIsFinished] = useState<boolean>(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -75,22 +83,19 @@ console.log(text);
     setAccuracy(100);
     setWpm(0);
     setStartScript(false);
-    setIsFinished(false); // Сбрасываем экран результатов
+    setIsFinished(false);
+    setRewardGiven(false); // Сбрасываем флаг награды
     setTimeout(() => inputRef.current?.focus(), 200);
   };
 
-  // Секундомер
   useEffect(() => {
     if (!startScript) return;
-    
     const interval = setInterval(() => {
       setSeconds(prevSeconds => prevSeconds + 1);
     }, 1000);
-    
     return () => clearInterval(interval);
   }, [startScript]);
 
-  // Расчет WPM и Точности в реальном времени
   useEffect(() => {
       if (!isFinished && seconds > 0 && textIndex > 0) {
         const words = textIndex / 5;
@@ -109,22 +114,20 @@ console.log(text);
 
     setPressCount(prev => prev + 1);
 
+    // --- ВЕРНЫЙ СИМВОЛ ---
     if (char === cymbols[textIndex]) {
-      // Верная буква 
       if (!startScript) setStartScript(true); 
 
       const newIndex = textIndex + 1;
       setTextIndex(newIndex);
-
       setCompleteCymbols(cymbols.slice(Math.max(0, newIndex - allCountCymbols), newIndex));
       setNextCymbols(cymbols.slice(newIndex, newIndex + allCountCymbols));
 
-      // --- ПРОВЕРКА НА КОНЕЦ ТЕКСТА ---
+      // --- ПОБЕДА ---
       if (newIndex >= cymbols.length) {
-          setStartScript(false); // Останавливаем таймер
-          setIsFinished(true);   // Показываем экран результатов
+          setStartScript(false);
+          setIsFinished(true);
           
-          // Рассчитываем финальный WPM (чтобы передать точное значение)
           let finalWpm = 0;
           if (seconds > 0) {
               const words = newIndex / 5;
@@ -133,32 +136,48 @@ console.log(text);
           }
           setWpm(finalWpm);
 
-          // Отправляем данные в родительский компонент (DailyMode)
+          // НАЧИСЛЕНИЕ ТОКЕНА
+          if (!rewardGiven) {
+            addToken();
+            setRewardGiven(true);
+          }
+
           if (onGameEnd) {
               onGameEnd(finalWpm);
           }
       }
 
-    } 
-    
-    // Обработка ошибок
-    if ((startScript || char === cymbols[textIndex]) && char !== cymbols[textIndex]) {
+    } else {
+      // --- ОШИБКА ---
+      
+      // Модификатор ХАРДКОР
+      if (modifiers?.hardcore) {
+        handleReloadApp();
+        return;
+      }
+
+      if (startScript || char === cymbols[textIndex]) {
         if (startScript) setFailCount(prev => prev + 1);
+      }
     }
 
-    // Расчет точности
     const total = pressCount + 1;
     const calculatedAcc = 100 - ((failCount + (char !== cymbols[textIndex] ? 1 : 0)) / total * 100);
     setAccuracy(Math.max(0, calculatedAcc));
   }
 
-  // --- ЭКРАН РЕЗУЛЬТАТОВ (ПОСЛЕ ЗАВЕРШЕНИЯ) ---
+  // --- ЭКРАН РЕЗУЛЬТАТОВ ---
   if (isFinished) {
       return (
         <div className={style.allTypingScriptMain}>
             <div className={style.resultsContainer}>
                 <h2 className={style.resultsTitle}>Результат</h2>
                 
+                {/* Уведомление о награде */}
+                <div style={{ color: '#FFD700', fontSize: '18px', marginBottom: '10px', fontWeight: 'bold' }}>
+                  🎉 Вы получили +1 токен! 💎
+                </div>
+
                 <div className={style.resultsGrid}>
                     <div className={style.resultItem}>
                         <span className={style.resultLabel}>WPM</span>
@@ -183,17 +202,20 @@ console.log(text);
         </div>
       );
   }
-  const charsLeft = comfirmText.length - textIndex;
-  // --- ЭКРАН ПЕЧАТИ (ВО ВРЕМЯ ИГРЫ) ---
+
+  const charsLeft = cymbols.length - textIndex;
+
+  // --- ЭКРАН ИГРЫ ---
   return (
     <div className={style.allTypingScriptMain}>
       
-      {/* Статистика сверху */}
+      {/* Статистика */}
       <div className={style.statsRow}>
           <div className={style.statPill}>
              Время : {seconds} S
           </div>
-          <div className={style.statPill}>
+          {/* Вернули счетчик символов */}
+          <div className={style.statPill} style={{minWidth: '180px'}}>
              Осталось : {charsLeft}
           </div>
           <div className={style.statPillMain}>
@@ -205,7 +227,7 @@ console.log(text);
       </div>
 
       {/* Кнопка Инфо */}
-      <div className={style.infoWrapper}>
+      <div style={{ width: '1200px', display: 'flex', justifyContent: 'flex-start', marginBottom: '-30px', paddingLeft: '20px', zIndex: 5 }}>
         <InfoButton />
       </div>
 
@@ -222,7 +244,13 @@ console.log(text);
         />
 
         <div className={style.typingScriptMain}>
-          <div className={style.completeCymbols}>{completeCymbols}</div>
+          {/* Модификатор: Скрывать набранное */}
+          <div 
+            className={style.completeCymbols}
+            style={{ opacity: modifiers?.hideCompleted ? 0 : 1, transition: 'opacity 0.2s' }}
+          >
+            {completeCymbols}
+          </div>
           <div className={style.cutterCymbols}> </div>
           <div className={style.nextCymbols}>{nextCymbols}</div>
         </div>
