@@ -63,7 +63,7 @@ export const TokenProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   const addToken = () => {
-    saveAll(tokens + 1);
+    saveAll(tokens + 100);
   };
 
   const spendToken = () => {

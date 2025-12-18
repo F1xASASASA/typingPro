@@ -2,42 +2,68 @@
   width: 100%;
   height: 70px;
   display: flex;
-  justify-content: center;
+  justify-content: center; /* Заголовок строго по центру */
   align-items: center;
   box-sizing: border-box;
-  background-color: #071031;
+  background-color: rgba(56, 32, 89, 0.4); /* Полупрозрачный фон */
+  backdrop-filter: blur(10px); /* Блюр фона (стекло) */
+  position: relative; /* Важно для absolute элементов внутри */
+  border-bottom: 1px solid rgba(147, 112, 219, 0.2);
 }
 
 .appTitle {
   font-size: 28px;
   font-weight: bold;
   color: #9370db;
+  letter-spacing: 1px;
 }
 
 .TitleSpanLeft {
   color: #00DFD8;
-  text-shadow: 0px 4px 4px rgb(0, 233, 216, 0.25);
+  text-shadow: 0px 0px 10px rgba(0, 223, 216, 0.4);
 }
 
 .TitleSpanRight {
   color: #FF5A78;
-  text-shadow: 0px 4px 4px rgb(0, 233, 216, 0.25);
+  text-shadow: 0px 0px 10px rgba(255, 90, 120, 0.4);
 }
 
-.helpButton {
-  background-color: #071031;
-  border: none;
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  font-size: 18px;
-  color: #e0e0e0;
+/* --- СТИЛЬ ДЛЯ ТОКЕНОВ (СЛЕВА) --- */
+.tokenBadge {
+  position: absolute;
+  left: 20px; /* Прижимаем к левому краю */
   display: flex;
-  justify-content: center;
   align-items: center;
+  gap: 8px;
+  
+  background: rgba(0, 0, 0, 0.3);
+  padding: 6px 14px 6px 10px;
+  border-radius: 50px;
+  border: 1px solid rgba(255, 215, 0, 0.5); /* Золотистая обводка */
+  
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: default;
+  user-select: none;
 }
 
-.helpButton:disabled {
-  cursor: default;
-  opacity: 0.7;
+.tokenBadge:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+  border-color: rgba(255, 215, 0, 0.8);
+}
+
+.tokenCount {
+  color: #fff;
+  font-weight: 700;
+  font-size: 18px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  padding-top: 1px;
+}
+
+/* Стили для SVG иконки */
+.coinIcon {
+  width: 24px;
+  height: 24px;
+  fill: #FFD700;
+  filter: drop-shadow(0 0 2px rgba(255, 215, 0, 0.5));
 }
