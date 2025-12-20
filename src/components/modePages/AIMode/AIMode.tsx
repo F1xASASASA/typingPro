@@ -91,10 +91,16 @@ const AIMode: React.FC = () => {
       )}
 
       {generatedText && (
+          <>
+          
         <AllTypingScript 
-           text={generatedText} 
-           onBack={handleReset} // <-- Передаем функцию для кнопки
-        />
+          text={generatedText} 
+          onBack={handleReset}/>
+       
+          <button onClick={handleReset} style={{marginBottom: '20px', background: 'transparent', border: '1px solid #555', color:'#fff', padding: '5px 10px', borderRadius:'10px', cursor:'pointer'}}>
+            Выбрать другую тему
+          </button>
+        </>
       )}
     </div>
   );

@@ -173,35 +173,47 @@ const AllTypingScript: React.FC<Props> = ({ text, onGameEnd, modifiers, onBack }
   // --- ЭКРАН ИГРЫ ---
   return (
     <div className={style.allTypingScriptMain}>
+      
+      {/* Статистика сверху */}
       <div className={style.statsRow}>
-          <div className={style.statPill}>Время : {seconds} S</div>
-          <div className={style.statPill} style={{minWidth: '180px'}}>Осталось : {charsLeft}</div>
-          <div className={style.statPillMain}>WPM : {wpm}</div>
-          <div className={style.statPill}>Точность : {Math.trunc(accuracy)}%</div>
+          <div className={style.statPill}>
+             Время : {seconds} S
+          </div>
+          <div className={style.statPill}>
+             Осталось : {charsLeft}
+          </div>
+          <div className={style.statPillMain}>
+             WPM (скорость) : {wpm}
+          </div>
+          <div className={style.statPill}>
+             Точность : {Math.trunc(accuracy)}%
+          </div>
       </div>
 
-      <div style={{ width: '1200px', display: 'flex', justifyContent: 'flex-start', marginBottom: '-30px', paddingLeft: '20px', zIndex: 5 }}>
+      <div className={style.infoWrapper}>
         <InfoButton />
       </div>
+      
+      {/* КНОПКИ */}
+       <div className={style.typingScriptInput} onClick={() => inputRef.current?.focus()}>
+        <input
+          ref={inputRef}
+          type="text"
+          autoCapitalize="none"
+          autoCorrect="off"
+          spellCheck={false}
+          className={style.hiddenInput}
+          onInput={handleInput}
+        />
 
-      <div className={style.typingScriptInput} onClick={() => inputRef.current?.focus()}>
-        <input ref={inputRef} type="text" className={style.hiddenInput} onInput={handleInput} autoCapitalize="none" autoCorrect="off" spellCheck={false}/>
         <div className={style.typingScriptMain}>
-          <div className={style.completeCymbols} style={{ opacity: modifiers?.hideCompleted ? 0 : 1, transition: 'opacity 0.2s' }}>{completeCymbols}</div>
+          <div className={style.completeCymbols}>{completeCymbols}</div>
           <div className={style.cutterCymbols}> </div>
           <div className={style.nextCymbols}>{nextCymbols}</div>
         </div>
       </div>
       
-      {/* КНОПКИ */}
-      <div className={style.buttonsRow}>
-        {onBack && (
-           <button className={style.secondaryButton} onClick={onBack}>
-             ← Другая тема
-           </button>
-        )}
-        <RestartButton onButtonClick={handleReloadApp}/>
-      </div>
+      <RestartButton onButtonClick={handleReloadApp}/>
     </div>
   );
 };

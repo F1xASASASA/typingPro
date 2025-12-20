@@ -9,9 +9,17 @@
   color: white;
   font-weight: bold;
   outline: none;
+  cursor: pointer;
 }
 
 .restartButton:disabled {
   cursor: default;
   opacity: 0.7;
+}
+
+@media(max-width: 480px) 
+{
+  .restartButton{
+    width: auto;
+  }
 }
